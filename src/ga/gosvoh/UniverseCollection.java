@@ -1,9 +1,7 @@
 package ga.gosvoh;
 
 import java.io.File;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Класс-оболочка для коллекции universeHashMap, реализованная с помощью HashMap
