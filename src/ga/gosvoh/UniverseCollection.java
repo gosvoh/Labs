@@ -1,5 +1,10 @@
 package ga.gosvoh;
 
+import ga.gosvoh.Commands.CommandManager;
+import ga.gosvoh.Commands.MapInfo;
+import ga.gosvoh.Commands.PrintHelp;
+import ga.gosvoh.Commands.ShowMap;
+
 import java.io.File;
 import java.util.*;
 
@@ -20,16 +25,25 @@ public class UniverseCollection {
 
     /**
      * Конструктор класса
+     *
      * @param filePath путь до файла
      */
     public UniverseCollection(String filePath) {
         mainFile = new File(filePath);
         initDate = new Date(System.currentTimeMillis());
+        try {
+            for (int i = 0; i < 10; i++)
+                universeHashMap.put(i, new Universe(Long.toHexString(Math.round(Math.random() * Integer.MAX_VALUE)),
+                        "Universe " + (i + 1)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Метод, который производит выборку команд
-     * @param cmd введённая строка
+     *
+     * @param cmd   введённая строка
      * @param check строка образец
      * @return true, если введённая строка совпадает с образцом, иначе возвращает false
      */
@@ -45,7 +59,16 @@ public class UniverseCollection {
                 Main.class.getPackage().getImplementationVersion() + "\n" +
                 "Используйте ? или help для получения справки");
 
-        for (; ; ) {
+        while (true) {
+            try {
+                line = input.nextLine();
+                new CommandManager(line, universeHashMap);
+            } catch (Exception e) {
+                break;
+            }
+        }
+
+        /*while (true) {
             try {
                 line = input.nextLine();
             } catch (Exception e) {
@@ -61,48 +84,48 @@ public class UniverseCollection {
                 continue;
 
             if (checkCmd(cmd, "?") || checkCmd(cmd, "help")) {
-                printHelp();
+                new PrintHelp().execute();
                 continue;
             }
 
             try {
                 if (checkCmd(cmd, "info")) {
+                    new MapInfo(universeHashMap).execute();
+                    //info(universeHashMap);
+                    continue;
+                }
 
+                if (checkCmd(cmd, "show")) {
+                    new ShowMap(universeHashMap).execute();
+                    //show(universeHashMap);
+                    continue;
                 }
 
                 if (checkCmd(cmd, "exit") || checkCmd(cmd, "quit"))
                     System.exit(0);
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Ошибка: " + e.getMessage());
                 continue;
             }
 
             System.out.println("Unknown command");
         }
+        */
 
         System.exit(0);
     }
 
-
-    /**
-     * Показать список доступных команд
-     * Пример команды: ?
-     */
-    private static void printHelp() {
-        System.out.println(
-                "Доступные команды: " +
-                        "\nsave                     - сохранить коллекцию" +
-                        "\nremove_greater_key {Key} - удалить из коллекции все элементы, ключ которых превышает заданный" +
-                        "\ninfo                     - вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)" +
-                        "\nadd_if_max {Json}        - добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции" +
-                        "\nremove_lower {Key}       - удалить из коллекции все элементы, ключ которых меньше, чем заданный" +
-                        "\nshow                     - вывести в стандартный поток вывода все элементы коллекции в строковом представлении" +
-                        "\ninsert {Key} {Json}      - добавить новый элемент с заданным ключом ( insert 10 {\"name\": \"Обливион\"} )" +
-                        "\nremove {Key}             - удалить элемент из коллекции по его ключу" +
-                        "\n{exit | quit}            - выйти из программы" +
-                        "\n{help | ?}               - показать доступные команды"
-        );
+    private void show(HashMap hashMap) {
+        hashMap.values().forEach(System.out::println);
     }
 
+    /**
+     * Показать информацию о коллекции
+     */
+    private void info(HashMap hashMap) {
+        System.out.println("Тип: " + hashMap.getClass() +
+                "\nДата инициализации: " + initDate +
+                "\nКоличество элементов: " + hashMap.size());
+    }
 }
