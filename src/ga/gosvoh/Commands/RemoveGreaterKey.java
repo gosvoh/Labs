@@ -1,6 +1,7 @@
 package ga.gosvoh.Commands;
 
 import ga.gosvoh.Universe;
+import ga.gosvoh.UniverseCollection;
 
 import java.util.HashMap;
 
@@ -11,18 +12,24 @@ import java.util.HashMap;
  */
 public class RemoveGreaterKey implements Command {
     private HashMap<Integer, Universe> map;
-    private int key;
+    private String[] cmd;
 
-    public RemoveGreaterKey(HashMap<Integer, Universe> map, int key) {
-        this.map = map;
-        this.key = key;
+    RemoveGreaterKey(String[] cmd) {
+        this.map = UniverseCollection.getUniverseHashMap();
+        this.cmd = cmd;
     }
 
     @Override
     public void execute() {
-        map.keySet().forEach(k -> {
-            if (k > key)
-                map.remove(k);
-        });
+        int key;
+        try {
+            key = Integer.parseInt(cmd[1]);
+            map.keySet().forEach(k -> {
+                if (k > key)
+                    map.remove(k);
+            });
+        } catch (NumberFormatException e) {
+            System.out.println("Неверный формат ключа, попробуйте ввести комнду заново");
+        }
     }
 }

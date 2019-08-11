@@ -1,6 +1,7 @@
 package ga.gosvoh.Commands;
 
 import ga.gosvoh.Universe;
+import ga.gosvoh.UniverseCollection;
 
 import java.util.HashMap;
 
@@ -12,14 +13,12 @@ import java.util.HashMap;
 public class ShowMap implements Command {
     private HashMap<Integer, Universe> map;
 
-    public ShowMap(HashMap<Integer, Universe> map) {
-        this.map = map;
+    ShowMap() {
+        this.map = UniverseCollection.getUniverseHashMap();
     }
 
     @Override
     public void execute() {
-        map.forEach((k,v) -> {
-            System.out.println("Ключ: " + k + "; Значение: " + v);
-        });
+        map.forEach((k, v) -> System.out.println("Ключ: " + k + "; Значение: " + v));
     }
 }

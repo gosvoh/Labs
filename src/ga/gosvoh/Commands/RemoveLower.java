@@ -1,24 +1,35 @@
 package ga.gosvoh.Commands;
 
 import ga.gosvoh.Universe;
+import ga.gosvoh.UniverseCollection;
 
 import java.util.HashMap;
 
 /**
- * Добавить новый элемент в словарь, если его значение превышает значение наибольшего элемента этого словаря
+ * Удалить все элементы из словаря, ключ которых меньше чем заданный
  *
  * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
  */
 public class RemoveLower implements Command {
     private HashMap<Integer, Universe> map;
-    private String element;
+    private String[] cmd;
 
-    public RemoveLower(HashMap<Integer, Universe> map, String element) {
-
+    RemoveLower(String[] cmd) {
+        this.map = UniverseCollection.getUniverseHashMap();
+        this.cmd = cmd;
     }
 
     @Override
     public void execute() {
-
+        int key;
+        try {
+            key = Integer.parseInt(cmd[1]);
+            map.keySet().forEach(k -> {
+                if (k < key)
+                    map.remove(k);
+            });
+        } catch (NumberFormatException e) {
+            System.out.println("Неверный формат ключа, попробуйте ввести комнду заново.");
+        }
     }
 }

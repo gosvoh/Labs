@@ -1,6 +1,7 @@
 package ga.gosvoh;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
@@ -10,13 +11,17 @@ import java.util.Scanner;
 public class JsonReader implements Closeable {
     private Scanner scanner;
     private HashMap<Integer, Universe> hashMap;
-    private String string;
+    private String json;
 
     public JsonReader(File file) throws FileNotFoundException {
         scanner = new Scanner(new FileReader(file));
     }
 
-    public Universe readUniverse(String json) {
+    public JsonReader(String json) {
+        this.json = json;
+    }
+
+    public Universe readUniverse() throws JsonSyntaxException {
         return new Gson().fromJson(json, Universe.class);
     }
 
@@ -26,7 +31,7 @@ public class JsonReader implements Closeable {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         scanner.close();
     }
 }

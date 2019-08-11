@@ -1,6 +1,7 @@
 package ga.gosvoh.Commands;
 
 import ga.gosvoh.Universe;
+import ga.gosvoh.UniverseCollection;
 
 import java.util.HashMap;
 
@@ -14,11 +15,9 @@ public class MapInfo implements Command {
 
     /**
      * Конструктор класса
-     *
-     * @param map словарь, о котором нужно вывести информацию
      */
-    public MapInfo(HashMap<Integer, Universe> map) {
-        this.map = map;
+    MapInfo() {
+        this.map = UniverseCollection.getUniverseHashMap();
     }
 
     @Override

@@ -15,4 +15,12 @@ public class Universe {
                 ", number=" + number +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getNumber() {
+        return number;
+    }
 }
