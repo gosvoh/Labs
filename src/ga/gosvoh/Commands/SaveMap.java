@@ -23,9 +23,9 @@ public class SaveMap implements Command {
     public void execute() {
         try (JsonWriter jsonWriter = new JsonWriter(UniverseCollection.mainFile)) {
             jsonWriter.writeToFile(map);
+            System.out.println("Файл сохранён!");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("У вас недостаточно прав для сохранения файла!");
         }
-        System.out.println("Файл сохранён!");
     }
 }

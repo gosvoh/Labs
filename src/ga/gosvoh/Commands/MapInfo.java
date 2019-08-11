@@ -23,7 +23,7 @@ public class MapInfo implements Command {
     @Override
     public void execute() {
         System.out.println("Тип коллекции: " + map.getClass() +
-                "\nДата инициализации: " +
+                "\nДата инициализации: " + UniverseCollection.getInitDate() +
                 "\nКоличество элементов: " + map.size());
     }
 }

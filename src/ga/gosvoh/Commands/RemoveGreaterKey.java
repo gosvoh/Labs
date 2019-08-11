@@ -28,6 +28,8 @@ public class RemoveGreaterKey implements Command {
                 if (k > key)
                     map.remove(k);
             });
+            System.out.println("Элементы успешно удалены!");
+            new SaveMap().execute();
         } catch (NumberFormatException e) {
             System.out.println("Неверный формат ключа, попробуйте ввести комнду заново");
         }

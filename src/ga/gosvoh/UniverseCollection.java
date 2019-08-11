@@ -17,7 +17,7 @@ import java.util.*;
  * @see Universe
  */
 public class UniverseCollection {
-    private Date initDate;
+    private static String initDate;
     private static HashMap<Integer, Universe> universeHashMap = new HashMap<>();
     public static File mainFile;
 
@@ -28,7 +28,7 @@ public class UniverseCollection {
      */
     public UniverseCollection(String filePath) {
         mainFile = new File(filePath);
-        initDate = new Date(System.currentTimeMillis());
+        initDate = new Date().toString();
 
         try {
             for (int i = 0; i < 10; i++)
@@ -41,6 +41,10 @@ public class UniverseCollection {
 
     public static HashMap<Integer, Universe> getUniverseHashMap() {
         return universeHashMap;
+    }
+
+    public static String getInitDate() {
+        return initDate;
     }
 
     void cli() {

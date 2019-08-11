@@ -45,8 +45,8 @@ public class Insert implements Command {
             }
 
             map.put(key, universe);
-
             System.out.println("Элемент успешно добавлен.");
+            new SaveMap().execute();
         } catch (NumberFormatException e) {
             System.out.println("Неверный формат ключа, попробуйте ввести команду заново.");
         } catch (JsonSyntaxException e) {

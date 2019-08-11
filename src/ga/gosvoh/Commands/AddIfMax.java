@@ -55,6 +55,7 @@ public class AddIfMax implements Command {
                 else {
                     map.put(newKey, universe);
                     System.out.println("Элемент успешно добавлен!");
+                    new SaveMap().execute();
                 }
             } else
                 System.out.println("Не удалось добавить элемент, его значение меньше необходимого.");

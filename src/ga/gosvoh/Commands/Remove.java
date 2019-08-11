@@ -28,6 +28,8 @@ public class Remove implements Command {
     public void execute() {
         try {
             map.remove(Integer.parseInt(cmd[1]));
+            System.out.println("Элемент успешно удалён!");
+            new SaveMap().execute();
         } catch (NumberFormatException e) {
             System.out.println("Неверный формат ключа, попробуйте ввести комнду заново.");
         }
