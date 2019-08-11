@@ -1,5 +1,6 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh;
 
+import ga.gosvoh.Commands.*;
 import ga.gosvoh.Universe;
 
 import java.util.Arrays;
@@ -9,12 +10,12 @@ import java.util.Scanner;
 /**
  * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
  */
-public class CommandManager {
+class CommandManager {
     private HashMap<String, Command> commandMap = new HashMap<>();
 
-    public CommandManager(String line) {
-        //String[] cmd = line.split("[ \t]+");
-        String[] cmd = line.split(" ");
+    CommandManager(String line) {
+        String[] cmd = line.split("[ \t]+");
+        //String[] cmd = line.split(" ");
         InitializeCommands(cmd);
         try {
             commandMap.get(cmd[0].toLowerCase()).execute();

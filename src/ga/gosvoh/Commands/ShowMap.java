@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class ShowMap implements Command {
     private HashMap<Integer, Universe> map;
 
-    ShowMap() {
+    public ShowMap() {
         this.map = UniverseCollection.getUniverseHashMap();
     }
 

@@ -19,7 +19,7 @@ public class Remove implements Command {
      *
      * @param cmd Команда с ключом элемента
      */
-    Remove(String[] cmd) {
+    public Remove(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;
     }

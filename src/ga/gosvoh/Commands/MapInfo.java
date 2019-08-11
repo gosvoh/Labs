@@ -16,7 +16,7 @@ public class MapInfo implements Command {
     /**
      * Конструктор класса
      */
-    MapInfo() {
+    public MapInfo() {
         this.map = UniverseCollection.getUniverseHashMap();
     }
 

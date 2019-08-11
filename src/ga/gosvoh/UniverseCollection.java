@@ -1,12 +1,6 @@
 package ga.gosvoh;
 
-import ga.gosvoh.Commands.CommandManager;
-import ga.gosvoh.Commands.MapInfo;
-import ga.gosvoh.Commands.PrintHelp;
-import ga.gosvoh.Commands.ShowMap;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**

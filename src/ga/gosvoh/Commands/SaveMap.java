@@ -15,7 +15,7 @@ import java.util.HashMap;
 public class SaveMap implements Command {
     private HashMap<Integer, Universe> map;
 
-    SaveMap() {
+    public SaveMap() {
         this.map = UniverseCollection.getUniverseHashMap();
     }
 

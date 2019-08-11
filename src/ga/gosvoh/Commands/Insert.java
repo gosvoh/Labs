@@ -21,7 +21,7 @@ public class Insert implements Command {
      *
      * @param cmd Команда с елементом в формате Json
      */
-    Insert(String[] cmd) {
+    public Insert(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;
     }

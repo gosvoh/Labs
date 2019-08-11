@@ -14,7 +14,7 @@ public class RemoveGreaterKey implements Command {
     private HashMap<Integer, Universe> map;
     private String[] cmd;
 
-    RemoveGreaterKey(String[] cmd) {
+    public RemoveGreaterKey(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;
     }

@@ -14,7 +14,7 @@ public class RemoveLower implements Command {
     private HashMap<Integer, Universe> map;
     private String[] cmd;
 
-    RemoveLower(String[] cmd) {
+    public RemoveLower(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;
     }

@@ -23,7 +23,7 @@ public class AddIfMax implements Command {
      *
      * @param cmd команда с элементом в формате Json
      */
-    AddIfMax(String[] cmd) {
+    public AddIfMax(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;
     }
