@@ -14,6 +14,11 @@ public class RemoveGreaterKey implements Command {
     private HashMap<Integer, Universe> map;
     private String[] cmd;
 
+    /**
+     * Конструктор класса
+     *
+     * @param cmd команда с ключом элемента
+     */
     public RemoveGreaterKey(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();
         this.cmd = cmd;

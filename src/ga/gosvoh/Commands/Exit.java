@@ -12,6 +12,7 @@ public class Exit implements Command {
     public void execute() {
         System.out.println("Действительно выйти из программы? (y | n)");
         if (new Scanner(System.in).nextLine().equalsIgnoreCase("y")) {
+            new SaveMap().execute();
             System.out.println("Выход из программы...");
             System.exit(0);
         }

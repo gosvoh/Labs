@@ -13,6 +13,9 @@ import java.util.HashMap;
 public class ShowMap implements Command {
     private HashMap<Integer, Universe> map;
 
+    /**
+     * Конструктор класса
+     */
     public ShowMap() {
         this.map = UniverseCollection.getUniverseHashMap();
     }

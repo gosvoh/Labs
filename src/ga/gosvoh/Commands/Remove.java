@@ -17,7 +17,7 @@ public class Remove implements Command {
     /**
      * Конструктор класса
      *
-     * @param cmd Команда с ключом элемента
+     * @param cmd команда с ключом элемента
      */
     public Remove(String[] cmd) {
         this.map = UniverseCollection.getUniverseHashMap();

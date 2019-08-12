@@ -8,14 +8,20 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
+ * Менеджер выборки команд
+ *
  * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
  */
 class CommandManager {
     private HashMap<String, Command> commandMap = new HashMap<>();
 
+    /**
+     * Конструктор класса
+     *
+     * @param line введённая с клавиатуры строка
+     */
     CommandManager(String line) {
         String[] cmd = line.split("[ \t]+");
-        //String[] cmd = line.split(" ");
         InitializeCommands(cmd);
         try {
             commandMap.get(cmd[0].toLowerCase()).execute();
@@ -25,6 +31,11 @@ class CommandManager {
         }
     }
 
+    /**
+     * Инициализация команд
+     *
+     * @param cmd команда с аргументами
+     */
     private void InitializeCommands(String[] cmd) {
         commandMap.put("show", new ShowMap());
         commandMap.put("add_if_max", new AddIfMax(cmd));

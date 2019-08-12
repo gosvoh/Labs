@@ -8,13 +8,16 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Сохранение объекта класса Map в Json файл по указанному пути
+ * Сохранение объекта класса HashMap в Json файл по указанному пути
  *
  * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
  */
 public class SaveMap implements Command {
     private HashMap<Integer, Universe> map;
 
+    /**
+     * Конструктор класса
+     */
     public SaveMap() {
         this.map = UniverseCollection.getUniverseHashMap();
     }

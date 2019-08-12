@@ -6,8 +6,7 @@ import java.util.*;
 /**
  * Класс-оболочка для коллекции universeHashMap, реализованная с помощью HashMap
  *
- * @author Алексей Вохмин
- * @version 2.0
+ * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
  * @see Universe
  */
 public class UniverseCollection {
