@@ -10,7 +10,7 @@ import java.util.HashMap;
 /**
  * Сохранение объекта класса HashMap в Json файл по указанному пути
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class SaveMap implements Command {
     private HashMap<Integer, Universe> map;

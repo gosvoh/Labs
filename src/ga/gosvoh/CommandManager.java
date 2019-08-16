@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  * Менеджер выборки команд
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 class CommandManager {
     private HashMap<String, Command> commandMap = new HashMap<>();

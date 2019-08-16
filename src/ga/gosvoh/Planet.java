@@ -3,9 +3,11 @@ package ga.gosvoh;
 /**
  * Планета, находящаяся во вселенной
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 class Planet extends Universe {
+
+    private String name;
 
     /**
      * Конструктор класса
@@ -14,5 +16,6 @@ class Planet extends Universe {
      */
     Planet(String name) {
         super(Double.toHexString(Math.round(Math.random() * Integer.MAX_VALUE)), name);
+        this.name = name;
     }
 }

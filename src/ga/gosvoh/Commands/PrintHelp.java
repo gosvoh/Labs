@@ -3,7 +3,7 @@ package ga.gosvoh.Commands;
 /**
  * Показать список доступных команд
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class PrintHelp implements Command {
     @Override

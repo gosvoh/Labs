@@ -3,9 +3,11 @@ package ga.gosvoh;
 /**
  * Мост, находящийся на планете
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Bridge extends Planet {
+
+    private String name;
 
     /**
      * Конструктор класса
@@ -14,5 +16,6 @@ public class Bridge extends Planet {
      */
     public Bridge(String name) {
         super(name);
+        this.name = name;
     }
 }

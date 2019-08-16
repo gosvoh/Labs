@@ -9,12 +9,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Класс, отвечающий за преобразование объекта в файл формата Json
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
- * @see Gson
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
+ * @see com.google.gson.Gson
  */
 public class JsonWriter implements Closeable {
     private FileWriter fileWriter;
@@ -36,7 +37,7 @@ public class JsonWriter implements Closeable {
      * @throws IOException кидает исключение если недостаточно прав для записи
      */
     public JsonWriter(String fileName) throws IOException {
-        if (!Files.exists(Path.of(fileName))) {
+        if (!Files.exists(Paths.get(fileName))) {
             fileWriter = new FileWriter(fileName);
         }
     }

@@ -3,9 +3,13 @@ package ga.gosvoh.Commands;
 /**
  * Функциональный интерфейс, предназначенный для исполнения команды
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 @FunctionalInterface
 public interface Command {
+
+    /**
+     * Выполнить команду
+     */
     void execute();
 }

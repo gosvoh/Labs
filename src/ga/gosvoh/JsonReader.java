@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 /**
- * Класс, отвечающий за преобразование строки в объект класса Universe или словарь HashMap<Integer, Universe>
+ * Класс, отвечающий за преобразование строки в объект класса Universe или словарь HashMap {@literal <} Integer, Universe {@literal >}
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  * @see Universe
  * @see UniverseCollection
+ * @see com.google.gson.Gson
  */
 public class JsonReader implements Closeable {
     private Scanner scanner;

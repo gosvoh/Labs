@@ -4,14 +4,20 @@ import java.io.File;
 import java.util.*;
 
 /**
- * Класс-оболочка для коллекции universeHashMap, реализованная с помощью HashMap
+ * Класс-оболочка для словаря universeHashMap, реализованного с помощью HashMap
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  * @see Universe
  */
 public class UniverseCollection {
     private static String initDate;
     private static HashMap<Integer, Universe> universeHashMap = new HashMap<>();
+    /**
+     * Файл со словарём объектов класса Universe в формате Json
+     *
+     * @see Universe
+     * @see com.google.gson.Gson
+     */
     public static File mainFile;
 
     /**
@@ -32,14 +38,28 @@ public class UniverseCollection {
         }
     }
 
+    /**
+     * Получить словарь объектов класса Universe
+     *
+     * @return Словарь объектов класса Universe
+     * @see Universe
+     */
     public static HashMap<Integer, Universe> getUniverseHashMap() {
         return universeHashMap;
     }
 
+    /**
+     * Получить дату и время инициализации
+     *
+     * @return Дата и время инициализации
+     */
     public static String getInitDate() {
         return initDate;
     }
 
+    /**
+     * Запуск 5 лабораотрной
+     */
     void cli() {
         Scanner input = new Scanner(System.in);
         String line;

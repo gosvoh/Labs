@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * Выход из программы
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Exit implements Command {
     @Override

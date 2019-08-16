@@ -8,7 +8,7 @@ import java.util.HashMap;
 /**
  * Удалить все элементы из словаря, ключ которых превышает заданный
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class RemoveGreaterKey implements Command {
     private HashMap<Integer, Universe> map;

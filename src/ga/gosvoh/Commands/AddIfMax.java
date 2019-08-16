@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Добавить новый элемент в словарь, если его значение превышает значение наибольшего элемента этого словаря
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class AddIfMax implements Command {
     private HashMap<Integer, Universe> map;

@@ -3,7 +3,7 @@ package ga.gosvoh;
 /**
  * Вселенная
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Universe {
     private String name, number;
@@ -28,18 +28,18 @@ public class Universe {
     }
 
     /**
-     * Получить имя вселенной
+     * Получить имя объекта
      *
-     * @return имя вселенной
+     * @return Имя объекта
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Получить номер вселенной
+     * Получить номер объекта
      *
-     * @return номер вселенной
+     * @return Номер объекта
      */
     public String getNumber() {
         return number;

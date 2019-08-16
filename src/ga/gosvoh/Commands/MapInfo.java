@@ -8,7 +8,7 @@ import java.util.HashMap;
 /**
  * Показать информацию о словаре
  *
- * @author Vokhmin Aleksey <vohmina2011@yandex.ru>
+ * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class MapInfo implements Command {
     private HashMap<Integer, Universe> map;
