@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Класс, отвечающий за преобразование строки в объект класса Universe или словарь HashMap {@literal <} Integer, Universe {@literal >}
@@ -18,7 +19,6 @@ import java.util.Scanner;
  */
 public class JsonReader implements Closeable {
     private Scanner scanner;
-    private HashMap<Integer, Universe> hashMap;
     private String json;
 
     /**
@@ -27,7 +27,7 @@ public class JsonReader implements Closeable {
      * @param file файл для чтения
      * @throws FileNotFoundException кидает исключение если файл не найден
      */
-    public JsonReader(File file) throws FileNotFoundException {
+    JsonReader(File file) throws FileNotFoundException {
         scanner = new Scanner(new FileReader(file));
     }
 
@@ -52,15 +52,19 @@ public class JsonReader implements Closeable {
     }
 
     /**
-     * Преобразование файла в объект класса HashMap
+     * Преобразование файла в объект класса ConcurrentHashMap
      *
      * @return объект класса HashMap
      * @throws JsonSyntaxException кидает исключение если файл не в формате Json
      * @see UniverseCollection
      */
-    public HashMap<Integer, Universe> readUniverseHasMap() throws JsonSyntaxException {
-        return new Gson().fromJson(scanner.toString(),
-                new TypeToken<HashMap<Integer, Universe>>(){}.getType());
+    ConcurrentHashMap<Integer, Universe> readUniverseConcurrentHashMap() throws JsonSyntaxException {
+        StringBuilder stringBuilder = new StringBuilder();
+        while (scanner.hasNextLine())
+            stringBuilder.append(scanner.nextLine());
+        return new Gson().fromJson(stringBuilder.toString(),
+                new TypeToken<ConcurrentHashMap<Integer, Universe>>() {
+                }.getType());
     }
 
     @Override

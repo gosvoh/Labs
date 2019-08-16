@@ -1,24 +1,21 @@
 package ga.gosvoh;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Класс-оболочка для словаря universeHashMap, реализованного с помощью HashMap
+ * Класс-оболочка для словаря universeHashMap, реализованного с помощью ConcurrentHashMap
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  * @see Universe
  */
 public class UniverseCollection {
-    private static String initDate;
-    private static HashMap<Integer, Universe> universeHashMap = new HashMap<>();
-    /**
-     * Файл со словарём объектов класса Universe в формате Json
-     *
-     * @see Universe
-     * @see com.google.gson.Gson
-     */
-    public static File mainFile;
+    private static Date initDate = new Date();
+    private static ConcurrentHashMap<Integer, Universe> universeConcurrentHashMap = new ConcurrentHashMap<>();
+    private static File mainFile;
 
     /**
      * Конструктор класса
@@ -27,15 +24,28 @@ public class UniverseCollection {
      */
     public UniverseCollection(String filePath) {
         mainFile = new File(filePath);
-        initDate = new Date().toString();
 
-        try {
-            for (int i = 0; i < 10; i++)
-                universeHashMap.put(i, new Universe(Long.toHexString(Math.round(Math.random() * Integer.MAX_VALUE)),
-                        "Universe " + (i + 1)));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!Files.exists(mainFile.toPath())) {
+            System.out.println("Fails!");
+            try {
+                for (int i = 0; i < 3; i++)
+                    universeConcurrentHashMap.put(i, new Universe(Long.toHexString(Math.round(Math.random() * Long.MAX_VALUE)),
+                            "Universe " + (i + 1), new Position(
+                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
+                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
+                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)))));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                universeConcurrentHashMap = new JsonReader(mainFile).readUniverseConcurrentHashMap();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+        universeConcurrentHashMap.values().forEach(universe -> initDate = initDate.compareTo(universe.getBirthDate()) >= 0 ? universe.getBirthDate() : initDate);
     }
 
     /**
@@ -44,8 +54,8 @@ public class UniverseCollection {
      * @return Словарь объектов класса Universe
      * @see Universe
      */
-    public static HashMap<Integer, Universe> getUniverseHashMap() {
-        return universeHashMap;
+    public static ConcurrentHashMap<Integer, Universe> getUniverseConcurrentHashMap() {
+        return universeConcurrentHashMap;
     }
 
     /**
@@ -53,8 +63,17 @@ public class UniverseCollection {
      *
      * @return Дата и время инициализации
      */
-    public static String getInitDate() {
+    public static Date getInitDate() {
         return initDate;
+    }
+
+    /**
+     * Получить файл со словарём объектов класса Universe в формате Json
+     *
+     * @return Файл со словарём объектов класса Universe в формате Json
+     */
+    public static File getMainFile() {
+        return mainFile;
     }
 
     /**

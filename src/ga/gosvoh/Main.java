@@ -16,7 +16,11 @@ public class Main {
      * @param args аргументы командной строки
      */
     public static void main(String[] args) {
-        UniverseCollection collection = new UniverseCollection(System.getProperty("user.home") + "/main.json");
+        UniverseCollection collection;
+        if (System.getenv("MAINJSONFILE") == null)
+            collection = new UniverseCollection(System.getProperty("user.home") + "/main.json");
+        else collection = new UniverseCollection(System.getenv("MAINJSONFILE"));
+
         collection.cli();
     }
 }

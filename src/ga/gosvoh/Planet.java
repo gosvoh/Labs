@@ -15,7 +15,7 @@ class Planet extends Universe {
      * @param name имя планеты
      */
     Planet(String name) {
-        super(Double.toHexString(Math.round(Math.random() * Integer.MAX_VALUE)), name);
+        super(Double.toHexString(Math.round(Math.random() * Integer.MAX_VALUE)), name, Position.zero());
         this.name = name;
     }
 }
