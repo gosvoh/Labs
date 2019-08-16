@@ -5,7 +5,8 @@ import ga.gosvoh.JsonReader;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
-import java.util.HashMap;
+import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Добавить элемент в словарь
@@ -13,7 +14,7 @@ import java.util.HashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Insert implements Command {
-    private HashMap<Integer, Universe> map;
+    private ConcurrentHashMap<Integer, Universe> map;
     private String[] cmd;
 
     /**
@@ -22,7 +23,7 @@ public class Insert implements Command {
      * @param cmd команда с елементом в формате Json
      */
     public Insert(String[] cmd) {
-        this.map = UniverseCollection.getUniverseHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentHashMap();
         this.cmd = cmd;
     }
 
@@ -32,18 +33,24 @@ public class Insert implements Command {
             int key = Integer.parseInt(cmd[1]);
             StringBuilder element = new StringBuilder();
             for (int i = 2; i < cmd.length; i++) {
-                element.append(cmd[i]);
+                ////Фикс для пробела в имени Вселенной////
+                boolean space = false;
+                int quote = 0;
+                for (char c : cmd[i].toCharArray()) {
+                    if (c == '"')
+                        quote++;
+                }
+                if (quote == 1)
+                    element.append(cmd[i]).append(" ");
+                    //////////////////////////////////////////
+                else
+                    element.append(cmd[i]);
             }
             Universe universe = new JsonReader(element.toString()).readUniverse();
             if (universe == null)
                 throw new JsonSyntaxException("");
-            try {
-                Integer.parseInt(universe.getNumber(), 16);
-            } catch (NumberFormatException e) {
-                System.out.println("Номер вселенной должен быть в шестнадцатеричном формате!");
-                throw new JsonSyntaxException("");
-            }
 
+            universe.setBirthDate(new Date());
             map.put(key, universe);
             System.out.println("Элемент успешно добавлен.");
             new SaveMap().execute();

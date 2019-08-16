@@ -26,7 +26,7 @@ class CommandManager {
         try {
             commandMap.get(cmd[0].toLowerCase()).execute();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Неизвестная команда!");
         }
     }

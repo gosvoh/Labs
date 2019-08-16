@@ -1,12 +1,17 @@
 package ga.gosvoh;
 
+import java.util.Date;
+
 /**
  * Вселенная
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Universe {
-    private String name, number;
+    private String name;
+    private long number;
+    private Date birthDate;
+    private Position position;
 
     /**
      * Конструктор класса
@@ -14,17 +19,11 @@ public class Universe {
      * @param number номер вселенной
      * @param name   имя вселенной
      */
-    public Universe(String number, String name) {
+    public Universe(String number, String name, Position position) {
         this.name = name;
-        this.number = number;
-    }
-
-    @Override
-    public String toString() {
-        return "Universe{" +
-                "name='" + name + '\'' +
-                ", number=" + number +
-                '}';
+        this.number = Long.parseLong(number, 16);
+        this.birthDate = new Date();
+        this.position = position;
     }
 
     /**
@@ -42,6 +41,43 @@ public class Universe {
      * @return Номер объекта
      */
     public String getNumber() {
-        return number;
+        return Long.toHexString(number);
+    }
+
+    /**
+     * Получить дату рождения объекта
+     *
+     * @return Дата рождения объекта
+     */
+    Date getBirthDate() {
+        return birthDate;
+    }
+
+    /**
+     * Получить позицию объекта
+     *
+     * @return Позиция объекта
+     */
+    public Position getPosition() {
+        return position;
+    }
+
+    /**
+     * Установить дату рождения объекта
+     *
+     * @param birthDate Дата рождения объекта
+     */
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Universe{" +
+                "name='" + name + '\'' +
+                ", number=" + getNumber() +
+                ", birthDate=" + birthDate +
+                ", position=" + position +
+                '}';
     }
 }
