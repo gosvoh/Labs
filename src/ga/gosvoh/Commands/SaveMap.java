@@ -24,7 +24,7 @@ public class SaveMap implements Command {
 
     @Override
     public void execute() {
-        try (JsonWriter jsonWriter = new JsonWriter(UniverseCollection.getMainFile())) {
+        try (JsonWriter jsonWriter = new JsonWriter(UniverseCollection.getMainFile().toPath())) {
             jsonWriter.writeToFile(map);
             System.out.println("Файл сохранён!");
         } catch (IOException e) {

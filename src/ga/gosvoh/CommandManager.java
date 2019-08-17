@@ -12,8 +12,8 @@ import java.util.Scanner;
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
-class CommandManager {
-    private HashMap<String, Command> commandMap = new HashMap<>();
+public class CommandManager {
+    private static HashMap<String, Command> commandMap = new HashMap<>();
 
     /**
      * Конструктор класса
@@ -26,7 +26,7 @@ class CommandManager {
         try {
             commandMap.get(cmd[0].toLowerCase()).execute();
         } catch (NullPointerException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Неизвестная команда!");
         }
     }
@@ -39,8 +39,8 @@ class CommandManager {
     private void InitializeCommands(String[] cmd) {
         commandMap.put("show", new ShowMap());
         commandMap.put("add_if_max", new AddIfMax(cmd));
-        commandMap.put("?", new PrintHelp());
-        commandMap.put("help", new PrintHelp());
+        commandMap.put("?", new PrintHelp(cmd));
+        commandMap.put("help", new PrintHelp(cmd));
         commandMap.put("exit", new Exit());
         commandMap.put("insert", new Insert(cmd));
         commandMap.put("info", new MapInfo());
@@ -48,5 +48,10 @@ class CommandManager {
         commandMap.put("remove_greater_key", new RemoveGreaterKey(cmd));
         commandMap.put("remove_lower", new RemoveLower(cmd));
         commandMap.put("save", new SaveMap());
+        commandMap.put("random", new RandomUniverse());
+    }
+
+    public static HashMap<String, Command> getCommandMap() {
+        return commandMap;
     }
 }

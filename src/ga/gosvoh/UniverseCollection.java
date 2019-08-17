@@ -26,23 +26,15 @@ public class UniverseCollection {
         mainFile = new File(filePath);
 
         if (!Files.exists(mainFile.toPath())) {
-            System.out.println("Fails!");
-            try {
-                for (int i = 0; i < 3; i++)
-                    universeConcurrentHashMap.put(i, new Universe(Long.toHexString(Math.round(Math.random() * Long.MAX_VALUE)),
-                            "Universe " + (i + 1), new Position(
-                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
-                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
-                            Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)))));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            initCollection();
         } else {
             try {
                 universeConcurrentHashMap = new JsonReader(mainFile).readUniverseConcurrentHashMap();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
+            if (universeConcurrentHashMap == null)
+                initCollection();
         }
 
         universeConcurrentHashMap.values().forEach(universe -> initDate = initDate.compareTo(universe.getBirthDate()) >= 0 ? universe.getBirthDate() : initDate);
@@ -74,6 +66,16 @@ public class UniverseCollection {
      */
     public static File getMainFile() {
         return mainFile;
+    }
+
+    private void initCollection() {
+        universeConcurrentHashMap = new ConcurrentHashMap<>();
+        for (int i = 0; i < 3; i++)
+            universeConcurrentHashMap.put(i, new Universe(Long.toHexString(Math.round(Math.random() * Long.MAX_VALUE)),
+                    "Universe " + (i + 1), new Position(
+                    Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
+                    Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
+                    Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)))));
     }
 
     /**
