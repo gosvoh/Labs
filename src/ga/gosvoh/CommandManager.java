@@ -1,11 +1,8 @@
 package ga.gosvoh;
 
 import ga.gosvoh.Commands.*;
-import ga.gosvoh.Universe;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * Менеджер выборки команд
@@ -26,7 +23,7 @@ public class CommandManager {
         try {
             commandMap.get(cmd[0].toLowerCase()).execute();
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("Неизвестная команда!");
         }
     }
