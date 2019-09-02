@@ -5,6 +5,7 @@ package ga.gosvoh;
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
+@SuppressWarnings("WeakerAccess")
 public class Position {
     private int x, y, z;
 
@@ -37,7 +38,7 @@ public class Position {
      *
      * @return Координата X
      */
-    private int getX() {
+    public int getX() {
         return x;
     }
 
@@ -46,7 +47,7 @@ public class Position {
      *
      * @return Координата Y
      */
-    private int getY() {
+    public int getY() {
         return y;
     }
 
@@ -55,7 +56,7 @@ public class Position {
      *
      * @return Координата Z
      */
-    private int getZ() {
+    public int getZ() {
         return z;
     }
 
@@ -88,8 +89,18 @@ public class Position {
      *
      * @return Позиция с нулевыми координатами
      */
-    static Position zero() {
+    public static Position zero() {
         return new Position(0, 0, 0);
+    }
+
+    /**
+     * Рассчитать расстояние между нулевыми координатами и указанными
+     *
+     * @param p координаты для вычисления расстояния
+     * @return расстояние между нулевыми координатами и указанными
+     */
+    public static double getDistance(Position p) {
+        return Math.sqrt(Math.pow(p.getX(), 2) + Math.pow(p.getY(), 2) + Math.pow(p.getZ(), 2));
     }
 
     @Override

@@ -3,7 +3,7 @@ package ga.gosvoh.Commands;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Показать все элементы словаря
@@ -11,13 +11,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class ShowMap implements Command {
-    private ConcurrentHashMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Integer, Universe> map;
 
     /**
      * Конструктор класса
      */
     public ShowMap() {
-        this.map = UniverseCollection.getUniverseConcurrentHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
+    }
+
+    public ShowMap(ConcurrentSkipListMap<Integer, Universe> map) {
+        this.map = map;
     }
 
     @Override

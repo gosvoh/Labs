@@ -7,7 +7,7 @@ import java.util.Date;
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
-public class Universe {
+public class Universe implements Comparable<Universe> {
     private String name;
     private long number;
     private Date birthDate;
@@ -58,7 +58,7 @@ public class Universe {
      *
      * @return Позиция объекта
      */
-    public Position getPosition() {
+    Position getPosition() {
         return position;
     }
 
@@ -79,5 +79,14 @@ public class Universe {
                 ", birthDate=" + birthDate +
                 ", position=" + position +
                 '}';
+    }
+
+    /**
+     * Метод для естественной сортировки, сортировка по расстоянию от нулевых координат до вселенной
+     */
+    @Override
+    public int compareTo(Universe o) {
+        Position p = o.getPosition();
+        return Double.compare(Position.getDistance(position), Position.getDistance(p));
     }
 }

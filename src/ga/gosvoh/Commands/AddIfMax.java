@@ -6,7 +6,7 @@ import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class AddIfMax implements Command {
-    private ConcurrentHashMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Integer, Universe> map;
     private String[] cmd;
 
     /**
@@ -24,7 +24,7 @@ public class AddIfMax implements Command {
      * @param cmd команда с элементом в формате Json
      */
     public AddIfMax(String[] cmd) {
-        this.map = UniverseCollection.getUniverseConcurrentHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
         this.cmd = cmd;
     }
 

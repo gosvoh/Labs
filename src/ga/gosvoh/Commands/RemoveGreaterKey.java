@@ -3,7 +3,7 @@ package ga.gosvoh.Commands;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Удалить все элементы из словаря, ключ которых превышает заданный
@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class RemoveGreaterKey implements Command {
-    private ConcurrentHashMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Integer, Universe> map;
     private String[] cmd;
 
     /**
@@ -20,7 +20,7 @@ public class RemoveGreaterKey implements Command {
      * @param cmd команда с ключом элемента
      */
     public RemoveGreaterKey(String[] cmd) {
-        this.map = UniverseCollection.getUniverseConcurrentHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
         this.cmd = cmd;
     }
 

@@ -6,7 +6,7 @@ import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
 import java.util.Date;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Добавить элемент в словарь
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Insert implements Command {
-    private ConcurrentHashMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Integer, Universe> map;
     private String[] cmd;
 
     /**
@@ -23,7 +23,7 @@ public class Insert implements Command {
      * @param cmd команда с елементом в формате Json
      */
     public Insert(String[] cmd) {
-        this.map = UniverseCollection.getUniverseConcurrentHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
         this.cmd = cmd;
     }
 

@@ -4,7 +4,7 @@ import ga.gosvoh.Position;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Добавить новую рандомную вселенную в этот бренный мир
@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class RandomUniverse implements Command {
-    private ConcurrentHashMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Integer, Universe> map;
 
     /**
      * Конструктор класса
      */
     public RandomUniverse() {
-        this.map = UniverseCollection.getUniverseConcurrentHashMap();
+        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
     }
 
     @Override

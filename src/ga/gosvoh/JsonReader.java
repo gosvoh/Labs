@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.*;
 import java.util.Scanner;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * Класс, отвечающий за преобразование строки в объект класса Universe или словарь HashMap {@literal <} Integer, Universe {@literal >}
@@ -57,12 +57,12 @@ public class JsonReader implements Closeable {
      * @throws JsonSyntaxException кидает исключение если файл не в формате Json
      * @see UniverseCollection
      */
-    ConcurrentHashMap<Integer, Universe> readUniverseConcurrentHashMap() throws JsonSyntaxException {
+    ConcurrentSkipListMap<Integer, Universe> readUniverseConcurrentSkipListMap() throws JsonSyntaxException {
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine())
             stringBuilder.append(scanner.nextLine());
         return new Gson().fromJson(stringBuilder.toString(),
-                new TypeToken<ConcurrentHashMap<Integer, Universe>>() {
+                new TypeToken<ConcurrentSkipListMap<Integer, Universe>>() {
                 }.getType());
     }
 
