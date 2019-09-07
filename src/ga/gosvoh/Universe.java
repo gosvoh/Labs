@@ -1,6 +1,7 @@
 package ga.gosvoh;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Вселенная
@@ -49,7 +50,8 @@ public class Universe implements Comparable<Universe> {
      *
      * @return Дата рождения объекта
      */
-    Date getBirthDate() {
+    @SuppressWarnings("WeakerAccess")
+    public Date getBirthDate() {
         return birthDate;
     }
 
@@ -58,7 +60,8 @@ public class Universe implements Comparable<Universe> {
      *
      * @return Позиция объекта
      */
-    Position getPosition() {
+    @SuppressWarnings("WeakerAccess")
+    public Position getPosition() {
         return position;
     }
 
@@ -88,5 +91,21 @@ public class Universe implements Comparable<Universe> {
     public int compareTo(Universe o) {
         Position p = o.getPosition();
         return Double.compare(Position.getDistance(position), Position.getDistance(p));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Universe)) return false;
+        Universe universe = (Universe) o;
+        return number == universe.number &&
+                name.equals(universe.name) &&
+                birthDate.equals(universe.birthDate) &&
+                position.equals(universe.position);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, number, birthDate, position);
     }
 }

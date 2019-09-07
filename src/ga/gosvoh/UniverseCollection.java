@@ -4,6 +4,7 @@ import ga.gosvoh.Commands.ShowMap;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.SocketException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -85,7 +86,7 @@ public class UniverseCollection {
     }
 
     /**
-     * Отсортировать коллеекцию ConcurrentSkipListMap по значениям
+     * Отсортировать словарь ConcurrentSkipListMap по значениям (костыль для сортировки)
      *
      * @param map коллекция для сортировки
      * @return отсортированная коллекция по значению

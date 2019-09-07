@@ -3,6 +3,8 @@
  */
 package ga.gosvoh;
 
+import java.net.SocketException;
+
 /**
  * Main класс
  *
@@ -15,12 +17,15 @@ public class Main {
      *
      * @param args аргументы командной строки
      */
+    @SuppressWarnings("UnusedAssignment")
     public static void main(String[] args) {
         UniverseCollection collection;
         if (System.getenv("MAINJSONFILE") == null)
             collection = new UniverseCollection(System.getProperty("user.home") + "/main.json");
         else collection = new UniverseCollection(System.getenv("MAINJSONFILE"));
 
-        collection.cli();
+        new RunServer();
+
+        //collection.cli();
     }
 }
