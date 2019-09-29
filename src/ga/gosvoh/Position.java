@@ -1,12 +1,14 @@
 package ga.gosvoh;
 
+import java.io.Serializable;
+
 /**
  * Позиция объекта
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 @SuppressWarnings("WeakerAccess")
-public class Position {
+public class Position implements Serializable {
     private int x, y, z;
 
     /**

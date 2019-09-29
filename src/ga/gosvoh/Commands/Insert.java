@@ -15,20 +15,16 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class Insert implements Command {
     private ConcurrentSkipListMap<Integer, Universe> map;
-    private String[] cmd;
 
     /**
      * Конструктор класса
-     *
-     * @param cmd команда с елементом в формате Json
      */
-    public Insert(String[] cmd) {
+    public Insert() {
         this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
-        this.cmd = cmd;
     }
 
     @Override
-    public void execute() {
+    public String execute(String[] cmd) {
         try {
             int key = Integer.parseInt(cmd[1]);
             StringBuilder element = new StringBuilder();
@@ -52,14 +48,14 @@ public class Insert implements Command {
 
             universe.setBirthDate(new Date());
             map.put(key, universe);
-            System.out.println("Элемент успешно добавлен.");
-            new SaveMap().execute();
+            new SaveMap().execute(cmd);
         } catch (NumberFormatException e) {
-            System.out.println("Неверный формат ключа, попробуйте ввести команду заново.");
+            return ("Неверный формат ключа, попробуйте ввести команду заново.");
         } catch (JsonSyntaxException e) {
-            System.out.println("Неверный формат элемента, попробуйте ввести команду заново.");
+            return ("Неверный формат элемента, попробуйте ввести команду заново.");
         } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Неверный формат команды, попробуйте ввести команду заново.");
+            return ("Неверный формат команды, попробуйте ввести команду заново.");
         }
+        return ("Элемент успешно добавлен.");
     }
 }

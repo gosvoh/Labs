@@ -25,7 +25,9 @@ public class ShowMap implements Command {
     }
 
     @Override
-    public void execute() {
-        map.forEach((k, v) -> System.out.println("Ключ: " + k + "; Значение: " + v));
+    public String execute(String[] cmd) {
+        StringBuilder ret = new StringBuilder();
+        map.forEach((k, v) -> ret.append("Ключ: ").append(k).append("; Значение: ").append(v).append("\n"));
+        return ret.toString();
     }
 }

@@ -12,20 +12,16 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 public class RemoveGreaterKey implements Command {
     private ConcurrentSkipListMap<Integer, Universe> map;
-    private String[] cmd;
 
     /**
      * Конструктор класса
-     *
-     * @param cmd команда с ключом элемента
      */
-    public RemoveGreaterKey(String[] cmd) {
+    public RemoveGreaterKey() {
         this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
-        this.cmd = cmd;
     }
 
     @Override
-    public void execute() {
+    public String execute(String[] cmd) {
         int key;
         try {
             key = Integer.parseInt(cmd[1]);
@@ -33,10 +29,10 @@ public class RemoveGreaterKey implements Command {
                 if (k > key)
                     map.remove(k);
             });
-            System.out.println("Элементы успешно удалены!");
-            new SaveMap().execute();
-        } catch (NumberFormatException e) {
-            System.out.println("Неверный формат ключа, попробуйте ввести комнду заново");
+            new SaveMap().execute(cmd);
+            return ("Элементы успешно удалены!");
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            return ("Неверный формат ключа, попробуйте ввести комнду заново");
         }
     }
 }

@@ -21,8 +21,8 @@ public class MapInfo implements Command {
     }
 
     @Override
-    public void execute() {
-        System.out.println("Тип коллекции: " + map.getClass() +
+    public String execute(String[] cmd) {
+        return ("Тип коллекции: " + map.getClass() +
                 "\nДата инициализации: " + UniverseCollection.getInitDate() +
                 "\nКоличество элементов: " + map.size());
     }

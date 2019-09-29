@@ -1,10 +1,9 @@
 package ga.gosvoh;
 
-import ga.gosvoh.Commands.ShowMap;
+import ga.gosvoh.Server.RunServer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.SocketException;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -15,9 +14,10 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  * @see Universe
  */
+@SuppressWarnings("WeakerAccess")
 public class UniverseCollection {
     private static Date initDate = new Date();
-    private static ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap = new ConcurrentSkipListMap<>();
+    private static ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap;
     private static File mainFile;
 
     /**
@@ -26,6 +26,7 @@ public class UniverseCollection {
      * @param filePath путь до файла
      */
     public UniverseCollection(String filePath) {
+        universeConcurrentSkipListMap = new ConcurrentSkipListMap<>();
         mainFile = new File(filePath);
 
         if (!Files.exists(mainFile.toPath())) {
@@ -34,13 +35,21 @@ public class UniverseCollection {
             try {
                 universeConcurrentSkipListMap = new JsonReader(mainFile).readUniverseConcurrentSkipListMap();
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+                System.out.println("Файл не найден!");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
-            if (universeConcurrentSkipListMap == null)
+            if (universeConcurrentSkipListMap == null || universeConcurrentSkipListMap.isEmpty()) {
+                System.out.println("Неверный фотмат файла, создаю новый словарь вселенных!");
                 initCollection();
+            }
         }
 
         universeConcurrentSkipListMap.values().forEach(universe -> initDate = initDate.compareTo(universe.getBirthDate()) >= 0 ? universe.getBirthDate() : initDate);
+    }
+
+    public UniverseCollection(ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap) {
+        UniverseCollection.universeConcurrentSkipListMap = universeConcurrentSkipListMap;
     }
 
     /**
@@ -51,6 +60,10 @@ public class UniverseCollection {
      */
     public static ConcurrentSkipListMap<Integer, Universe> getUniverseConcurrentSkipListMap() {
         return universeConcurrentSkipListMap;
+    }
+
+    public static void setUniverseConcurrentSkipListMap(ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap) {
+        UniverseCollection.universeConcurrentSkipListMap = universeConcurrentSkipListMap;
     }
 
     /**
@@ -91,34 +104,26 @@ public class UniverseCollection {
      * @param map коллекция для сортировки
      * @return отсортированная коллекция по значению
      */
-    private ConcurrentSkipListMap<Integer, Universe> sortByValues(ConcurrentSkipListMap<Integer, Universe> map) {
+    public static ConcurrentSkipListMap<Integer, Universe> sortByValues(ConcurrentSkipListMap<Integer, Universe> map) {
         Comparator<Integer> valueComparator = Comparator.comparing(map::get);
         ConcurrentSkipListMap<Integer, Universe> sortedByValues = new ConcurrentSkipListMap<>(valueComparator);
         sortedByValues.putAll(map);
         return sortedByValues;
     }
 
+    public static ConcurrentSkipListMap<Integer, Universe> getSortedCollection() {
+        return sortByValues(universeConcurrentSkipListMap);
+    }
+
     /**
-     * Запуск 5 лабораотрной
+     * Добавить элемент в словарь
      */
-    void cli() {
-        Scanner input = new Scanner(System.in);
-        String line;
+    public static void put(Integer key, Universe value) {
+        if (universeConcurrentSkipListMap != null)
+            universeConcurrentSkipListMap.put(key, value);
+    }
 
-        System.out.println("Лабораторная работа по программированию. Версия " +
-                Main.class.getPackage().getImplementationVersion() + "\n" +
-                "Используйте ? или help для получения справки");
-
-        while (true) {
-            try {
-                line = input.nextLine();
-                new CommandManager(line);
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
-        }
-
-        System.exit(0);
+    public void RunServer() {
+        new RunServer();
     }
 }

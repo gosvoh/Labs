@@ -1,5 +1,6 @@
 package ga.gosvoh;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,11 +9,12 @@ import java.util.Objects;
  *
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
-public class Universe implements Comparable<Universe> {
+public class Universe implements Comparable<Universe>, Serializable {
     private String name;
     private long number;
     private Date birthDate;
     private Position position;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Конструктор класса

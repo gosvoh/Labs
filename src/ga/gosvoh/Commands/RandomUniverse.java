@@ -22,7 +22,7 @@ public class RandomUniverse implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute(String[] cmd) {
         Integer key;
         do {
             key = Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE));
@@ -33,7 +33,7 @@ public class RandomUniverse implements Command {
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)))));
-        System.out.println("Вселенная добавлена!");
-        new SaveMap().execute();
+        new SaveMap().execute(cmd);
+        return ("Вселенная добавлена!");
     }
 }

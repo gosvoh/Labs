@@ -16,20 +16,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class AddIfMax implements Command {
     private ConcurrentSkipListMap<Integer, Universe> map;
-    private String[] cmd;
 
     /**
      * Контруктор класса
-     *
-     * @param cmd команда с элементом в формате Json
      */
-    public AddIfMax(String[] cmd) {
+    public AddIfMax() {
         this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
-        this.cmd = cmd;
     }
 
     @Override
-    public void execute() {
+    public String execute(String[] cmd) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i < cmd.length; i++) {
             stringBuilder.append(cmd[i]);
@@ -54,13 +50,14 @@ public class AddIfMax implements Command {
                     newKey = newKey + 1;
                 else {
                     map.put(newKey, universe);
-                    System.out.println("Элемент успешно добавлен!");
-                    new SaveMap().execute();
+                    new SaveMap().execute(cmd);
+                    return ("Элемент успешно добавлен!");
                 }
             } else
-                System.out.println("Не удалось добавить элемент, его значение меньше необходимого.");
+                return ("Не удалось добавить элемент, его значение меньше необходимого.");
         } catch (JsonSyntaxException e) {
-            System.out.println("Неверный формат элемента, попробуйте ввести комнду заново.");
+            return ("Неверный формат элемента, попробуйте ввести комнду заново.");
         }
+        return "";
     }
 }

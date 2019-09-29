@@ -11,5 +11,5 @@ public interface Command {
     /**
      * Выполнить команду
      */
-    void execute();
+    String execute(String[] arguments);
 }

@@ -23,15 +23,16 @@ public class SaveMap implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute(String[] cmd) {
         try {
             JsonWriter jsonWriter = new JsonWriter(UniverseCollection.getMainFile().toPath());
             jsonWriter.writeToFile(map);
-            System.out.println("Файл сохранён!");
+            return ("Файл сохранён!");
         } catch (IOException e) {
-            System.out.println("У вас недостаточно прав для сохранения файла!");
+            return ("У вас недостаточно прав для сохранения файла!");
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

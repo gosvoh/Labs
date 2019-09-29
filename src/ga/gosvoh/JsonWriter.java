@@ -37,7 +37,7 @@ public class JsonWriter {
     public void writeToFile(Object object) throws IOException {
         Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
-        SeekableByteChannel seekableByteChannel = Files.newByteChannel(path, CREATE, WRITE);
+        SeekableByteChannel seekableByteChannel = Files.newByteChannel(path, CREATE, WRITE, TRUNCATE_EXISTING);
         seekableByteChannel.write(ByteBuffer.wrap(gson.toJson(object).getBytes()));
     }
 }

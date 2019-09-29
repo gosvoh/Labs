@@ -1,4 +1,4 @@
-package ga.gosvoh;
+package ga.gosvoh.Server;
 
 import java.net.InetAddress;
 import java.util.Objects;
@@ -7,8 +7,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings("WeakerAccess")
 public class ClientID {
     private InetAddress address;
-    private int port;
-    private boolean isProcessing;
+    private int port, receivedPackets;
+    private boolean isProcessing, isImporting;
     private static CopyOnWriteArrayList<ClientID> ids = new CopyOnWriteArrayList<>();
 
     private ClientID(InetAddress address, int port) {
@@ -21,7 +21,7 @@ public class ClientID {
         if (!ids.contains(clientID)) {
             ids.add(clientID);
         }
-        return clientID;
+        return ids.get(ids.indexOf(clientID));
     }
 
     public static CopyOnWriteArrayList<ClientID> getIds() {
@@ -32,12 +32,28 @@ public class ClientID {
         return port;
     }
 
+    public InetAddress getAddress() {
+        return address;
+    }
+
     public boolean isProcessing() {
         return isProcessing;
     }
 
+    public boolean isImporting() {
+        return isImporting;
+    }
+
     public void startProcessing() {
         isProcessing = true;
+    }
+
+    public void startImporting() {
+        isImporting = true;
+    }
+
+    public void stopImporting() {
+        isImporting = false;
     }
 
     public void stopProcessing() {
@@ -49,6 +65,19 @@ public class ClientID {
             if (!clientID.isProcessing)
                 ids.remove(clientID);
         }
+    }
+
+    public ClientID resetPacketsCount() {
+        receivedPackets = 0;
+        return this;
+    }
+
+    public void incReceivedPackets() {
+        receivedPackets++;
+    }
+
+    public int getReceivedPackets() {
+        return receivedPackets;
     }
 
     @Override
