@@ -1,6 +1,6 @@
 package ga.gosvoh;
 
-import ga.gosvoh.Server.RunServer;
+import ga.gosvoh.server.RunServer;
 
 import java.io.File;
 import java.io.FileNotFoundException;

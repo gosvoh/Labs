@@ -1,14 +1,10 @@
 package ga.gosvoh;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.MalformedJsonException;
 
 import java.io.*;
-import java.lang.reflect.Type;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -18,12 +14,11 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  * @see Universe
  * @see UniverseCollection
- * @see com.google.gson.Gson
+ * @see Gson
  */
 public class JsonReader implements Closeable {
     private Scanner scanner;
     private String json;
-    private com.google.gson.stream.JsonReader reader;
 
     /**
      * Конструктор класса
@@ -33,7 +28,6 @@ public class JsonReader implements Closeable {
      */
     JsonReader(File file) throws FileNotFoundException {
         scanner = new Scanner(new FileReader(file));
-        reader = new com.google.gson.stream.JsonReader(new FileReader(file));
     }
 
     /**

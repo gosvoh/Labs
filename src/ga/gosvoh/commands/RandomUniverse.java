@@ -1,4 +1,4 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
 import ga.gosvoh.Position;
 import ga.gosvoh.Universe;

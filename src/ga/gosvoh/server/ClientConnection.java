@@ -1,17 +1,14 @@
-package ga.gosvoh.Server;
+package ga.gosvoh.server;
 
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 import ga.gosvoh.CommandManager;
-import ga.gosvoh.Utils.Defines;
-import ga.gosvoh.Utils.PacketOverflowException;
-import ga.gosvoh.Utils.PacketUtils;
+import ga.gosvoh.utils.PacketOverflowException;
+import ga.gosvoh.utils.PacketUtils;
 
 import java.io.IOException;
 import java.net.*;
-import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("WeakerAccess")

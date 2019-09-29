@@ -1,9 +1,4 @@
-package ga.gosvoh.Commands;
-
-import ga.gosvoh.Server.ClientConnection;
-
-import java.net.DatagramPacket;
-import java.nio.ByteBuffer;
+package ga.gosvoh.commands;
 
 public class ShutdownServer implements Command {
     @Override

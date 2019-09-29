@@ -1,4 +1,4 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
 /**
  * Показать список доступных команд

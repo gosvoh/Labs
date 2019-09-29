@@ -1,6 +1,6 @@
-package ga.gosvoh.Server;
+package ga.gosvoh.server;
 
-import ga.gosvoh.Utils.Defines;
+import ga.gosvoh.utils.Defines;
 
 import java.io.IOException;
 import java.net.*;
@@ -52,7 +52,9 @@ public class RunServer {
             }
 
             if (clientID.isProcessing()) {
-                kostyl.get(clientID).add(packet);
+                if (clientID.isImporting())
+                    //kostyl.get(clientID).add(packet);
+                    System.out.println("IMPORT");
                 continue;
             }
 

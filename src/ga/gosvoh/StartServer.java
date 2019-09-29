@@ -3,9 +3,7 @@
  */
 package ga.gosvoh;
 
-import ga.gosvoh.Server.RunServer;
-
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 /**
  * Main класс

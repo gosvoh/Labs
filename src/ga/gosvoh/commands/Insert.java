@@ -1,4 +1,4 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
 import com.google.gson.JsonSyntaxException;
 import ga.gosvoh.JsonReader;

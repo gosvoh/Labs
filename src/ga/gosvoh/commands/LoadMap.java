@@ -1,11 +1,10 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
-import ga.gosvoh.Server.ClientConnection;
-import ga.gosvoh.Server.ClientID;
+import ga.gosvoh.server.ClientConnection;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.Utils.PacketOverflowException;
-import ga.gosvoh.Utils.PacketUtils;
+import ga.gosvoh.utils.PacketOverflowException;
+import ga.gosvoh.utils.PacketUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 /**
  * Загрузить файл на локальный компьютер

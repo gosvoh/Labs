@@ -1,9 +1,9 @@
-package ga.gosvoh.Utils;
+package ga.gosvoh.utils;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static ga.gosvoh.Utils.Defines.PACKET_LENGTH;
+import static ga.gosvoh.utils.Defines.PACKET_LENGTH;
 
 public class PacketUtils {
     /**

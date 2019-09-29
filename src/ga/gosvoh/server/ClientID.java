@@ -1,4 +1,4 @@
-package ga.gosvoh.Server;
+package ga.gosvoh.server;
 
 import java.net.InetAddress;
 import java.util.Objects;

@@ -1,4 +1,4 @@
-package ga.gosvoh.Utils;
+package ga.gosvoh.utils;
 
 public class AlreadyHaveKeyException extends Exception {
     public AlreadyHaveKeyException(String msg) {

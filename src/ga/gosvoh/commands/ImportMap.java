@@ -1,13 +1,13 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
-import ga.gosvoh.Server.ClientConnection;
-import ga.gosvoh.Server.ClientID;
-import ga.gosvoh.Server.RunServer;
+import ga.gosvoh.server.ClientConnection;
+import ga.gosvoh.server.ClientID;
+import ga.gosvoh.server.RunServer;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.Utils.AlreadyHaveKeyException;
-import ga.gosvoh.Utils.Defines;
-import ga.gosvoh.Utils.PacketUtils;
+import ga.gosvoh.utils.AlreadyHaveKeyException;
+import ga.gosvoh.utils.Defines;
+import ga.gosvoh.utils.PacketUtils;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 /**
  * Загрузить словарь на сервер
@@ -29,6 +29,7 @@ public class ImportMap implements Command {
 
     public ImportMap() {
         map = UniverseCollection.getSortedCollection();
+        ClientID.getClientID(ClientConnection.getInetSocketAddress().getAddress(), ClientConnection.getInetSocketAddress().getPort()).startImporting();
         //socket = RunServer.getSocket();
     }
 
@@ -36,7 +37,6 @@ public class ImportMap implements Command {
     public String execute(String[] cmd) {
         map.clear();
 
-        ClientID.getClientID(ClientConnection.getInetSocketAddress().getAddress(), ClientConnection.getInetSocketAddress().getPort()).startImporting();
 
         try {
             socket = new DatagramSocket();
@@ -76,15 +76,16 @@ public class ImportMap implements Command {
             System.out.println("GOOD");
             if (dataBuffer.position() == 0)
                 continue;*/
-            //DatagramPacket packet = RunServer.getKostyl().get(ClientConnection.getCurrentClientID()).get(receivedPackets);
             System.out.println(RunServer.getKostyl().size());
-            //dataBuffer.put(packet.getData());
+            System.out.println(RunServer.getKostyl().get(ClientConnection.getCurrentClientID()).size());
+            DatagramPacket packet = RunServer.getKostyl().get(ClientConnection.getCurrentClientID()).get(receivedPackets);
+            dataBuffer.put(packet.getData());
 
             receivedPackets++;
-            countOfUniverses = PacketUtils.bytesToInt(dataBuffer.get(0), dataBuffer.get(1), dataBuffer.get(2), dataBuffer.get(3));
-            universeKey = PacketUtils.bytesToInt(dataBuffer.get(4), dataBuffer.get(5), dataBuffer.get(6), dataBuffer.get(7));
-            countOfPackets = dataBuffer.get(8) & 0xff;
-            currentPacketNumber = dataBuffer.get(9) & 0xff;
+            countOfUniverses = dataBuffer.getInt();
+            universeKey = dataBuffer.getInt();
+            countOfPackets = dataBuffer.get() & 0xff;
+            currentPacketNumber = dataBuffer.get() & 0xff;
 
             if (countOfUniverses > 0) {
                 if (countOfPackets > 1) {
@@ -96,20 +97,21 @@ public class ImportMap implements Command {
                         packetsParts.set(currentPacketNumber, dataBuffer);
 
                     if (countOfPackets == receivedPackets) {
-                        response = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH));
+                        response = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH));
                         for (ByteBuffer b : packetsParts) {
                             b.flip();
-                            response.put(b.array(), Defines.COLLECTION_METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
+                            response.put(b.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
                         }
                     } else continue;
                 }
-                response = ByteBuffer.allocate(Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
-                response.put(dataBuffer.array(), Defines.COLLECTION_METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
+                response = ByteBuffer.allocate(Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
+                response.put(dataBuffer.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
                 try {
                     Universe universe = (Universe) new ObjectInputStream(new ByteArrayInputStream(response.array())).readObject();
                     if (map.containsKey(universeKey))
                         throw new AlreadyHaveKeyException("Ошибка во время получения словаря, попробуйте ещё раз");
                     map.put(universeKey, universe);
+                    System.out.println(universe.toString());
                     receivedUniverse++;
                 } catch (IOException | ClassNotFoundException | AlreadyHaveKeyException e) {
                     System.out.println(e.getMessage());
