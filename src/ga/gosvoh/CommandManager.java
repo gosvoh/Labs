@@ -1,6 +1,6 @@
 package ga.gosvoh;
 
-import ga.gosvoh.Commands.*;
+import ga.gosvoh.commands.*;
 
 import java.util.HashMap;
 

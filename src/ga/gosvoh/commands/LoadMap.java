@@ -1,9 +1,9 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
 import ga.gosvoh.StartClient;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.Utils.*;
+import ga.gosvoh.utils.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -61,10 +61,10 @@ public class LoadMap implements Command {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            countOfUniverses = PacketUtils.bytesToInt(dataBuffer.get(0), dataBuffer.get(1), dataBuffer.get(2), dataBuffer.get(3));
-            universeKey = PacketUtils.bytesToInt(dataBuffer.get(4), dataBuffer.get(5), dataBuffer.get(6), dataBuffer.get(7));
-            countOfPackets = dataBuffer.get(8) & 0xff;
-            currentPacketNumber = dataBuffer.get(9) & 0xff;
+            countOfUniverses = dataBuffer.getInt();
+            universeKey = dataBuffer.getInt();
+            countOfPackets = dataBuffer.get() & 0xff;
+            currentPacketNumber = dataBuffer.get() & 0xff;
 
             if (countOfUniverses > 0) {
                 if (countOfPackets > 1) {
@@ -76,15 +76,15 @@ public class LoadMap implements Command {
                         packetsParts.set(currentPacketNumber, dataBuffer);
 
                     if (countOfPackets == receivedPackets) {
-                        response = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH));
+                        response = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH));
                         for (ByteBuffer b : packetsParts) {
                             b.flip();
-                            response.put(b.array(), Defines.COLLECTION_METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
+                            response.put(b.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
                         }
                     } else continue;
                 }
-                response = ByteBuffer.allocate(Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
-                response.put(dataBuffer.array(), Defines.COLLECTION_METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.COLLECTION_METADATA_LENGTH);
+                response = ByteBuffer.allocate(Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
+                response.put(dataBuffer.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
                 try {
                     Universe universe = (Universe) new ObjectInputStream(new ByteArrayInputStream(response.array())).readObject();
                     if (map.containsKey(universeKey))

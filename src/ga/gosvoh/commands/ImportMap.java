@@ -1,9 +1,9 @@
-package ga.gosvoh.Commands;
+package ga.gosvoh.commands;
 
 import ga.gosvoh.StartClient;
 import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.Utils.*;
+import ga.gosvoh.utils.*;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -11,7 +11,7 @@ import java.nio.channels.DatagramChannel;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 public class ImportMap implements Command {
     private ConcurrentSkipListMap<Integer, Universe> map;
@@ -41,8 +41,8 @@ public class ImportMap implements Command {
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
                 objectOutputStream.writeObject(universe);
 
-                int countOfPackets = (int) Math.ceil(byteArrayOutputStream.toByteArray().length / (PACKET_LENGTH - COLLECTION_METADATA_LENGTH)) +
-                        (byteArrayOutputStream.toByteArray().length % (PACKET_LENGTH - COLLECTION_METADATA_LENGTH) == 0 ? 0 : 1);
+                int countOfPackets = (int) Math.ceil(byteArrayOutputStream.toByteArray().length / (PACKET_LENGTH - METADATA_LENGTH)) +
+                        (byteArrayOutputStream.toByteArray().length % (PACKET_LENGTH - METADATA_LENGTH) == 0 ? 0 : 1);
                 if (countOfPackets > 256)
                     throw new PacketOverflowException("Too many packets for this request!");
 
@@ -51,7 +51,7 @@ public class ImportMap implements Command {
                     byteBuffer.clear();
                     byteBuffer.put(PacketUtils.intToBytes(map.size()));
                     byteBuffer.put(PacketUtils.intToBytes((int) iterator.next()));
-                    PacketUtils.putDataIntoByteBuffer(byteBuffer, wrappedData, countOfPackets, i, COLLECTION_METADATA_LENGTH);
+                    PacketUtils.putDataIntoByteBuffer(byteBuffer, wrappedData, countOfPackets, i, METADATA_LENGTH);
                     byteBuffer.flip();
 
                     try {

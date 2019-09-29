@@ -1,8 +1,8 @@
 package ga.gosvoh;
 
-import ga.gosvoh.Utils.*;
+import ga.gosvoh.utils.*;
 
-import static ga.gosvoh.Utils.Defines.*;
+import static ga.gosvoh.utils.Defines.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -65,8 +65,7 @@ public class StartClient {
         ByteBuffer d = ByteBuffer.wrap(data.getBytes());
         for (int i = 0; i < countOfPackets; i++) {
             byteBuffer.clear();
-            byteBuffer.put((byte) countOfPackets);
-            byteBuffer.put((byte) i);
+            byteBuffer.put(PacketUtils.createMetadata(0, 0, countOfPackets, i));
             if (((d.limit() - (i * (PACKET_LENGTH - METADATA_LENGTH))) >= (PACKET_LENGTH - METADATA_LENGTH)))
                 byteBuffer.put(d.array(), i * (PACKET_LENGTH - METADATA_LENGTH), PACKET_LENGTH - METADATA_LENGTH);
             else {

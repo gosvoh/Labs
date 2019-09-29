@@ -1,4 +1,4 @@
-package ga.gosvoh.Commands;/*
+package ga.gosvoh.commands;/*
 package ga.gosvoh.Commands;
 
 

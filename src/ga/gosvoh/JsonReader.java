@@ -3,7 +3,6 @@ package ga.gosvoh;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.MalformedJsonException;
 
 import java.io.Closeable;
 import java.io.File;
