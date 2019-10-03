@@ -38,7 +38,8 @@ public class StartClient {
                 if (CommandManager.isCommand(cmd))
                     CommandManager.ExecuteCommand(cmd);
                 else
-                    sendPacket(cmd);
+                    PacketUtils.sendData(cmd.getBytes());
+                    //sendPacket(cmd);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -49,9 +50,13 @@ public class StartClient {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (!receivePacket()) {
+                /*if (!receivePacket()) {
                     continue;
                 } else
+                    break;*/
+                if (!PacketUtils.receivePacket().isFullData())
+                    continue;
+                else
                     break;
             }
         }

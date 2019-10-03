@@ -1,5 +1,7 @@
 package ga.gosvoh.utils;
 
+import ga.gosvoh.StartClient;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.DatagramChannel;
@@ -50,8 +52,9 @@ public class PacketUtils {
             receivedBuffer.clear();
 
             try {
-                DatagramChannel channel = DatagramChannel.open();
-                channel.receive(receivedBuffer);
+                //DatagramChannel channel = DatagramChannel.open();
+                //channel.receive(receivedBuffer);
+                StartClient.getChannel().receive(receivedBuffer);
                 if (receivedBuffer.position() == 0)
                     continue;
                 receivedPackets++;
@@ -67,39 +70,50 @@ public class PacketUtils {
             countOfPackets = receivedBuffer.get() & 0xff;
             currentPacketNumber = receivedBuffer.get() & 0xff;
 
-            ReceivedData receivedData = new ReceivedData(
-                    receivedBuffer.getInt(),
-                    receivedBuffer.getInt(),
-                    receivedBuffer.get() & 0xff,
-                    receivedBuffer.get() & 0xff,
-                    receivedBuffer.);
-
-            /*if (countOfUniverses == 0) {
-                if (countOfPackets > 0) {
-                    while (packetsParts.size() < currentPacketNumber)
-                        packetsParts.add(null);
-                    if (packetsParts.size() == currentPacketNumber)
-                        packetsParts.add(receivedBuffer);
-                    if (packetsParts.get(currentPacketNumber) == null)
-                        packetsParts.set(currentPacketNumber, receivedBuffer);
-
-                    if (countOfPackets == currentPacketNumber){
-                        dataBuffer = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH));
-                        for (ByteBuffer b : packetsParts) {
-                            dataBuffer.put(receivedBuffer.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
-                            return dataBuffer;
-                        }
-                    }
-                }
+            if (countOfPackets > 0) {
+                while (packetsParts.size() < currentPacketNumber)
+                    packetsParts.add(null);
+                if (packetsParts.size() == currentPacketNumber)
+                    packetsParts.add(receivedBuffer);
+                if (packetsParts.get(currentPacketNumber) == null)
+                    packetsParts.set(currentPacketNumber, receivedBuffer);
             }
 
-            if (countOfUniverses > 1) {
-                if (countOfPackets == 1) {
-
-                }
-            }*/
+            if (countOfPackets == currentPacketNumber) {
+                dataBuffer = ByteBuffer.allocate(countOfPackets * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH));
+                for (ByteBuffer b : packetsParts)
+                    dataBuffer.put(receivedBuffer.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
+                return new ReceivedData(countOfUniverses, universeKey, dataBuffer.array());
+            }
         }
+        return new ReceivedData();
+    }
 
-        return null;
+    public static void sendData(byte[] cmd) throws PacketOverflowException {
+        int countOfPackets = (int) Math.ceil(cmd.length / (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH)) +
+                (cmd.length % (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH) == 0 ? 0 : 1);
+        if (countOfPackets > 256)
+            throw new PacketOverflowException("Too many packets for this request!");
+        ByteBuffer byteBuffer = ByteBuffer.allocate(Defines.PACKET_LENGTH);
+        ByteBuffer data = ByteBuffer.wrap(cmd);
+        for (int i = 0; i < countOfPackets; i++) {
+            byteBuffer.clear();
+            byteBuffer.put(createMetadata(0, 0, countOfPackets, i));
+            if (((data.limit() - (i * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH))) >= (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH)))
+                byteBuffer.put(data.array(), i * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH), Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
+            else {
+                byteBuffer.put(data.array(), i * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH), (data.limit() - (i * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH))));
+                byte[] spaces = new byte[(Defines.PACKET_LENGTH - Defines.METADATA_LENGTH) - (data.limit() - (i * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH)))];
+                Arrays.fill(spaces, " ".getBytes()[0]);
+                byteBuffer.put(spaces);
+            }
+            byteBuffer.flip();
+            try {
+                //channel.send(byteBuffer, inetSocketAddress);
+                StartClient.getChannel().send(byteBuffer, StartClient.getInetSocketAddress());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
