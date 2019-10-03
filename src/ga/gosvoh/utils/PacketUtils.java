@@ -44,4 +44,23 @@ public class PacketUtils {
         }
         return ret;
     }
+
+    public static ByteBuffer createMetadata(int countOfUniverses, int universeKey, int countOfPackets, int currentPacketNumber) {
+        ByteBuffer metadata = ByteBuffer.allocate(Defines.METADATA_LENGTH);
+        if (countOfUniverses == -1) {
+            metadata.put(" ".getBytes(), 0, 8);
+        } else metadata.putInt(countOfUniverses).putInt(universeKey);
+        metadata.put((byte) countOfPackets).put((byte) currentPacketNumber);
+        return metadata;
+    }
+
+    public static ReceivedData receivePacket() {
+
+
+        return new ReceivedData();
+    }
+
+    public static void sendData(byte[] data) {
+
+    }
 }

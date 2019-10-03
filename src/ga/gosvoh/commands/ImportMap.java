@@ -76,10 +76,10 @@ public class ImportMap implements Command {
             System.out.println("GOOD");
             if (dataBuffer.position() == 0)
                 continue;*/
-            System.out.println(RunServer.getKostyl().size());
+            /*System.out.println(RunServer.getKostyl().size());
             System.out.println(RunServer.getKostyl().get(ClientConnection.getCurrentClientID()).size());
             DatagramPacket packet = RunServer.getKostyl().get(ClientConnection.getCurrentClientID()).get(receivedPackets);
-            dataBuffer.put(packet.getData());
+            dataBuffer.put(packet.getData());*/
 
             receivedPackets++;
             countOfUniverses = dataBuffer.getInt();
