@@ -4,6 +4,7 @@ import ga.gosvoh.Universe;
 import ga.gosvoh.UniverseCollection;
 
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Показать все элементы словаря
@@ -11,7 +12,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class ShowMap implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
@@ -20,7 +21,7 @@ public class ShowMap implements Command {
         this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
     }
 
-    public ShowMap(ConcurrentSkipListMap<Integer, Universe> map) {
+    public ShowMap(ConcurrentSkipListMap<Long, Universe> map) {
         this.map = map;
     }
 

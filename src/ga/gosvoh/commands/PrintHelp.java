@@ -12,7 +12,7 @@ public class PrintHelp implements Command {
 
     @Override
     public String execute(String[] cmd) {
-        if (cmd.length > 1 && !cmd[0].equals("?"))
+        if (cmd.length > 1)
             switch (cmd[1]) {
                 case "save":
                     return ("save                      - Сохраняет текущее состояние словаря в файл");

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("WeakerAccess")
 public class Position implements Serializable {
-    private int x, y, z;
+    private long x, y, z;
 
     /**
      * Создать позицию, на такущей позиции
@@ -29,7 +29,7 @@ public class Position implements Serializable {
      * @param y Коордната Y
      * @param z Коордната Z
      */
-    public Position(int x, int y, int z) {
+    public Position(long x, long y, long z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -40,7 +40,7 @@ public class Position implements Serializable {
      *
      * @return Координата X
      */
-    public int getX() {
+    public long getX() {
         return x;
     }
 
@@ -49,7 +49,7 @@ public class Position implements Serializable {
      *
      * @return Координата Y
      */
-    public int getY() {
+    public long getY() {
         return y;
     }
 
@@ -58,7 +58,7 @@ public class Position implements Serializable {
      *
      * @return Координата Z
      */
-    public int getZ() {
+    public long getZ() {
         return z;
     }
 
@@ -80,7 +80,7 @@ public class Position implements Serializable {
      * @param y Коордната Y
      * @param z Коордната Z
      */
-    public void set(int x, int y, int z) {
+    public void set(long x, long y, long z) {
         this.x = x;
         this.y = y;
         this.z = z;

@@ -3,6 +3,10 @@
  */
 package ga.gosvoh;
 
+import ga.gosvoh.utils.Defines;
+
+import java.util.Scanner;
+
 import static ga.gosvoh.utils.Defines.*;
 
 /**
@@ -18,11 +22,23 @@ public class StartServer {
      * @param args аргументы командной строки
      */
     public static void main(String[] args) {
+        System.out.println("Лабораторная работа по программированию. Версия " +
+                StartServer.class.getPackage().getImplementationVersion());
+
         UniverseCollection collection;
         if (System.getenv("MAINJSONFILE") == null)
             collection = new UniverseCollection(DEFAULT_JSON_FILE_PATH);
         else collection = new UniverseCollection(System.getenv("MAINJSONFILE"));
 
-        collection.RunServer();
+        System.out.print("Введите порт сервера или оставьте пустым (стандартный порт 27965): ");
+
+        int PORT;
+        try {
+            PORT = Integer.parseInt(new Scanner(System.in).nextLine());
+        } catch (NumberFormatException e) {
+            PORT = Defines.PORT;
+        }
+
+        collection.RunServer(PORT);
     }
 }

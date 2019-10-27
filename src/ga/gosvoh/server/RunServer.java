@@ -12,21 +12,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @SuppressWarnings("InfiniteLoopStatement")
 public class RunServer {
     private static ConcurrentHashMap<ClientID, CopyOnWriteArrayList<DatagramPacket>> packetsParts = new ConcurrentHashMap<>();
-    //private static ConcurrentHashMap<ClientID, CopyOnWriteArrayList<DatagramPacket>> kostyl = new ConcurrentHashMap<>();
     private static ConcurrentHashMap<ClientID, CopyOnWriteArrayList<ReceivedData>> receivedData = new ConcurrentHashMap<>();
     private static DatagramSocket socket;
 
-    public RunServer() {
-
+    public RunServer(int PORT) {
         try {
-            socket = new DatagramSocket(Defines.PORT);
+            socket = new DatagramSocket(PORT);
             socket.setSoTimeout(Defines.CONNECTION_TIMEOUT);
         } catch (IllegalArgumentException | IOException e) {
             System.out.println(e);
             return;
         }
 
-        System.out.println("Сервер запущен!");
+        System.out.println("Сервер запущен! Порт сервера: " + PORT);
 
         while (true) {
             byte[] buffer = new byte[Defines.PACKET_LENGTH];
@@ -36,8 +34,6 @@ public class RunServer {
             try {
                 socket.receive(packet);
             } catch (SocketTimeoutException e) {
-                packetsParts.clear();
-                //kostyl.clear();
                 receivedData.clear();
                 ClientID.clearAll();
                 continue;
@@ -49,45 +45,60 @@ public class RunServer {
             int port = packet.getPort();
             ClientID clientID = ClientID.getClientID(address, port);
 
-            if (!receivedData.containsKey(clientID))
+            if (clientID.isLoadImport())
+                continue;
+
+            if (!receivedData.containsKey(clientID)) {
                 receivedData.put(clientID, new CopyOnWriteArrayList<>());
+                clientID.resetReceivedDatasCout();
+            }
 
             if (!packetsParts.containsKey(clientID)) {
                 packetsParts.put(clientID, new CopyOnWriteArrayList<>());
-                //kostyl.put(clientID, new CopyOnWriteArrayList<>());
                 clientID.resetPacketsCount();
             }
 
-            if (clientID.isProcessing()) {
-                if (clientID.isImporting())
-                    //kostyl.get(clientID).add(packet);
-                    System.out.println("IMPORT");
-                continue;
-            }
+            ByteBuffer packetBuffer = ByteBuffer.allocate(Defines.PACKET_LENGTH);
+            ByteBuffer dataBuffer = ByteBuffer.allocate(Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
+            packetBuffer.put(packet.getData());
+            packetBuffer.flip();
 
-            ByteBuffer data = ByteBuffer.allocate(Defines.PACKET_LENGTH);
-            data.put(packet.getData());
+            byte commandCode = packetBuffer.get();
+            int countOfPackets = packetBuffer.get();
+            int totalCount = packetBuffer.getInt();
+            dataBuffer.put(packetBuffer.array(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
 
-            int countOfUniverses = data.getInt();
-            int universeKey = data.getInt();
-            int countOfPackets = data.get() & 0xff;
-            int currentPacketNumber = data.get() & 0xff;
+            //receivedData.get(clientID).add(new ReceivedData(commandCode, totalCount, data));
 
-            /*while (packetsParts.get(clientID).size() < currentPacketNumber)
+            while (packetsParts.get(clientID).size() < countOfPackets)
                 packetsParts.get(clientID).add(null);
-            if ((packetsParts.get(clientID).size() == currentPacketNumber)) {
+            while (receivedData.get(clientID).size() < totalCount)
+                receivedData.get(clientID).add(null);
+            /*if ((packetsParts.get(clientID).size() == countOfPackets)) {
                 packetsParts.get(clientID).add(packet);
                 clientID.incReceivedPackets();
-            }
-            if (packetsParts.get(clientID).get(currentPacketNumber) == null) {
-                packetsParts.get(clientID).set(currentPacketNumber, packet);
-                clientID.incReceivedPackets();
             }*/
+            if (packetsParts.get(clientID).get(clientID.getReceivedPackets()) == null) {
+                packetsParts.get(clientID).set(clientID.getReceivedPackets(), packet);
+                clientID.incReceivedPackets();
+            }
 
-            //while (receivedData.get(clientID).get())
+            if (countOfPackets == clientID.getReceivedPackets()) {
+                ByteBuffer bb = ByteBuffer.allocate(packetsParts.size() * (Defines.PACKET_LENGTH - Defines.METADATA_LENGTH));
+                for (DatagramPacket p : packetsParts.get(clientID))
+                    bb.put(p.getData(), Defines.METADATA_LENGTH, Defines.PACKET_LENGTH - Defines.METADATA_LENGTH);
 
-            if (countOfPackets == clientID.getReceivedPackets())
+                if (receivedData.get(clientID).get(clientID.getReceivedDatas()) == null)
+                    receivedData.get(clientID).set(clientID.getReceivedDatas(), new ReceivedData(new InetSocketAddress(packet.getAddress(), packet.getPort()), commandCode, totalCount, bb.array()));
+                clientID.resetPacketsCount();
+                clientID.incReceivedDatasCount();
+                packetsParts.remove(clientID);
+            }
+
+            if (receivedData.get(clientID).size() == clientID.getReceivedDatas()) {
+                clientID.resetReceivedDatasCout();
                 newClientConnection(clientID);
+            }
         }
     }
 
@@ -95,12 +106,8 @@ public class RunServer {
         return socket;
     }
 
-    /*public static ConcurrentHashMap<ClientID, CopyOnWriteArrayList<DatagramPacket>> getKostyl() {
-        return kostyl;
-    }*/
-
     private static void newClientConnection(ClientID clientID) {
-        ClientConnection clientConnection = new ClientConnection(packetsParts.remove(clientID));
+        ClientConnection clientConnection = new ClientConnection(receivedData.remove(clientID));
         Thread thread = new Thread(clientConnection, "New client thread");
         clientID.startProcessing();
         thread.start();

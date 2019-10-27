@@ -2,7 +2,7 @@ package ga.gosvoh;
 
 import ga.gosvoh.commands.*;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Менеджер выборки команд
@@ -10,7 +10,7 @@ import java.util.HashMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class CommandManager {
-    private static HashMap<String, Command> commandMap = new HashMap<>();
+    private static ConcurrentHashMap<String, Command> commandMap = new ConcurrentHashMap<>();
 
     static {
         commandMap.put("show", new ShowMap());
@@ -38,7 +38,7 @@ public class CommandManager {
         }
     }
 
-    public static HashMap<String, Command> getCommandMap() {
+    public static ConcurrentHashMap<String, Command> getCommandMap() {
         return commandMap;
     }
 }

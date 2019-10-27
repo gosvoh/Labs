@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class RandomUniverse implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
@@ -23,13 +23,12 @@ public class RandomUniverse implements Command {
 
     @Override
     public String execute(String[] cmd) {
-        Integer key;
+        Long key;
         do {
-            key = Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE));
+            key = Math.round(Math.random() * Integer.MAX_VALUE);
         } while (map.containsKey(key));
 
-        map.put(key, new Universe(Long.toHexString(Math.round(Math.random() * Long.MAX_VALUE)),
-                "Universe " + key, new Position(
+        map.put(key, new Universe(key, "Universe " + key, new Position(
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                 Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)))));

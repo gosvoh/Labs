@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Implementation-Version: 2.1
+Implementation-Version: 3.8
+Main-Class: ga.gosvoh.StartServer
 

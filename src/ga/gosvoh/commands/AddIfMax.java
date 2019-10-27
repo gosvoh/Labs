@@ -8,6 +8,7 @@ import ga.gosvoh.UniverseCollection;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Добавить новый элемент в словарь, если его значение превышает значение наибольшего элемента этого словаря
@@ -15,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class AddIfMax implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Контруктор класса
@@ -35,29 +36,22 @@ public class AddIfMax implements Command {
             Universe universe = new JsonReader(stringBuilder.toString()).readUniverse();
             if (universe == null)
                 throw new JsonSyntaxException("");
-            int universeNumber = Integer.parseInt(universe.getNumber(), 16);
-            AtomicInteger maxNumber = new AtomicInteger(Integer.MIN_VALUE);
+            long universeNumber = universe.getNumber();
+            AtomicLong maxNumber = new AtomicLong(Long.MIN_VALUE);
             map.forEach((k, v) -> {
-                int valueNumber = Integer.parseInt(v.getNumber(), 16);
+                long valueNumber = v.getNumber();
                 if (maxNumber.get() < valueNumber) {
                     maxNumber.set(valueNumber);
                 }
             });
             if (universeNumber > maxNumber.get()) {
-                int newKey = Collections.max(map.keySet()) + 1;
-                if (map.containsKey(newKey))
-                    //noinspection UnusedAssignment
-                    newKey = newKey + 1;
-                else {
-                    map.put(newKey, universe);
-                    new SaveMap().execute(cmd);
-                    return ("Элемент успешно добавлен!");
-                }
+                map.put(universeNumber, universe);
+                new SaveMap().execute(cmd);
+                return ("Элемент успешно добавлен!");
             } else
                 return ("Не удалось добавить элемент, его значение меньше необходимого.");
         } catch (JsonSyntaxException e) {
             return ("Неверный формат элемента, попробуйте ввести комнду заново.");
         }
-        return "";
     }
 }

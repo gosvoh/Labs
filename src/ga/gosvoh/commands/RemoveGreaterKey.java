@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class RemoveGreaterKey implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
@@ -22,9 +22,9 @@ public class RemoveGreaterKey implements Command {
 
     @Override
     public String execute(String[] cmd) {
-        int key;
+        long key;
         try {
-            key = Integer.parseInt(cmd[1]);
+            key = Long.parseLong(cmd[1]);
             map.keySet().forEach(k -> {
                 if (k > key)
                     map.remove(k);

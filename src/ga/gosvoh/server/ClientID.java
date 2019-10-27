@@ -1,15 +1,19 @@
 package ga.gosvoh.server;
 
+import ga.gosvoh.utils.ReceivedData;
+
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("WeakerAccess")
 public class ClientID {
     private InetAddress address;
-    private int port, receivedPackets;
-    private boolean isProcessing, isImporting;
+    private int port, receivedPackets, receivedDatas;
+    private boolean isProcessing, isLoadImport;
     private static CopyOnWriteArrayList<ClientID> ids = new CopyOnWriteArrayList<>();
+    private CopyOnWriteArrayList<ReceivedData> receivedData;
 
     private ClientID(InetAddress address, int port) {
         this.address = address;
@@ -32,28 +36,28 @@ public class ClientID {
         return port;
     }
 
-    public InetAddress getAddress() {
-        return address;
+    public InetSocketAddress getInetSocketAddress() {
+        return new InetSocketAddress(address, port);
     }
 
     public boolean isProcessing() {
         return isProcessing;
     }
 
-    public boolean isImporting() {
-        return isImporting;
+    public boolean isLoadImport() {
+        return isLoadImport;
     }
 
     public void startProcessing() {
         isProcessing = true;
     }
 
-    public void startImporting() {
-        isImporting = true;
+    public void startLoadImport() {
+        isLoadImport = true;
     }
 
-    public void stopImporting() {
-        isImporting = false;
+    public void stopLoadImport() {
+        isLoadImport = false;
     }
 
     public void stopProcessing() {
@@ -67,17 +71,38 @@ public class ClientID {
         }
     }
 
-    public ClientID resetPacketsCount() {
+    public void resetPacketsCount() {
         receivedPackets = 0;
-        return this;
+    }
+
+    public void resetReceivedDatasCout() {
+        receivedDatas = 0;
     }
 
     public void incReceivedPackets() {
         receivedPackets++;
     }
 
+    public void incReceivedDatasCount() {
+        receivedDatas++;
+    }
+
     public int getReceivedPackets() {
         return receivedPackets;
+    }
+
+    public int getReceivedDatas() {
+        return receivedDatas;
+    }
+
+    public void setReceivedData(CopyOnWriteArrayList<ReceivedData> receivedData) {
+        this.receivedData = receivedData;
+    }
+
+    public CopyOnWriteArrayList<ReceivedData> getReceivedData() {
+        if (receivedData != null)
+            return receivedData;
+        else return null;
     }
 
     @Override

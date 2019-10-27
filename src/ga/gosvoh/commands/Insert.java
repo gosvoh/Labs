@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
  * @author Vokhmin Aleksey {@literal <}vohmina2011{@literal @}yandex.ru{@literal >}
  */
 public class Insert implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
@@ -26,7 +26,8 @@ public class Insert implements Command {
     @Override
     public String execute(String[] cmd) {
         try {
-            int key = Integer.parseInt(cmd[1]);
+            long key = Long.parseLong(cmd[1]);
+            System.out.println(key);
             StringBuilder element = new StringBuilder();
             for (int i = 2; i < cmd.length; i++) {
                 ////Фикс для пробела в имени Вселенной////
