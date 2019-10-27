@@ -60,12 +60,12 @@ public class JsonReader implements Closeable {
      * @throws JsonSyntaxException кидает исключение если файл не в формате Json
      * @see UniverseCollection
      */
-    ConcurrentSkipListMap<Integer, Universe> readUniverseConcurrentSkipListMap() throws JsonSyntaxException {
+    ConcurrentSkipListMap<Long, Universe> readUniverseConcurrentSkipListMap() throws JsonSyntaxException {
         StringBuilder stringBuilder = new StringBuilder();
         while (scanner.hasNextLine())
             stringBuilder.append(scanner.nextLine());
         return new Gson().fromJson(stringBuilder.toString(),
-                new TypeToken<ConcurrentSkipListMap<Integer, Universe>>() {
+                new TypeToken<ConcurrentSkipListMap<Long, Universe>>() {
                 }.getType());
     }
 

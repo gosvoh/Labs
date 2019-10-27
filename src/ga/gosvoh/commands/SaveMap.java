@@ -14,17 +14,18 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 @SuppressWarnings({"WeakerAccess", "TryWithIdenticalCatches"})
 public class SaveMap implements Command {
-    private ConcurrentSkipListMap<Integer, Universe> map;
+    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
      */
     public SaveMap() {
-        this.map = UniverseCollection.getUniverseConcurrentSkipListMap();
     }
 
     @Override
     public void execute() {
+        map = UniverseCollection.getUniverseConcurrentSkipListMap();
+
         try {
             JsonWriter jsonWriter = new JsonWriter(UniverseCollection.getMainFile().toPath());
             jsonWriter.writeToFile(map);

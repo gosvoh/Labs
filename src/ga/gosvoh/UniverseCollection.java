@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentSkipListMap;
 @SuppressWarnings("WeakerAccess")
 public class UniverseCollection {
     private static Date initDate = new Date();
-    private static ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap;
+    private static ConcurrentSkipListMap<Long, Universe> universeConcurrentSkipListMap;
     private static File mainFile;
 
     /**
@@ -47,7 +47,7 @@ public class UniverseCollection {
         universeConcurrentSkipListMap.values().forEach(universe -> initDate = initDate.compareTo(universe.getBirthDate()) >= 0 ? universe.getBirthDate() : initDate);
     }
 
-    public UniverseCollection(ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap) {
+    public UniverseCollection(ConcurrentSkipListMap<Long, Universe> universeConcurrentSkipListMap) {
         UniverseCollection.universeConcurrentSkipListMap = universeConcurrentSkipListMap;
     }
 
@@ -57,13 +57,12 @@ public class UniverseCollection {
      * @return Словарь объектов класса Universe
      * @see Universe
      */
-    public static ConcurrentSkipListMap<Integer, Universe> getUniverseConcurrentSkipListMap() {
+    public static ConcurrentSkipListMap<Long, Universe> getUniverseConcurrentSkipListMap() {
         return universeConcurrentSkipListMap;
     }
 
-    public static void setUniverseConcurrentSkipListMap(ConcurrentSkipListMap<Integer, Universe> universeConcurrentSkipListMap) {
+    public static void setUniverseConcurrentSkipListMap(ConcurrentSkipListMap<Long, Universe> universeConcurrentSkipListMap) {
         UniverseCollection.universeConcurrentSkipListMap = universeConcurrentSkipListMap;
-        CommandManager.ExecuteCommand("show");
     }
 
     /**
@@ -89,12 +88,11 @@ public class UniverseCollection {
      */
     private void initCollection() {
         for (int i = 0; i < 10; i++) {
-            Universe universe = new Universe(Long.toHexString(Math.round(Math.random() * Long.MAX_VALUE)),
-                    "Universe " + (i + 1), new Position(
-                    Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
+            Universe universe = new Universe(Math.round(Math.random() * Long.MAX_VALUE), "Universe " + (i + 1),
+                    new Position(Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                     Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE)),
                     Math.toIntExact(Math.round(Math.random() * Integer.MAX_VALUE))));
-            universeConcurrentSkipListMap.put(i, universe);
+            universeConcurrentSkipListMap.put(universe.getNumber(), universe);
         }
     }
 
@@ -104,21 +102,21 @@ public class UniverseCollection {
      * @param map коллекция для сортировки
      * @return отсортированная коллекция по значению
      */
-    public static ConcurrentSkipListMap<Integer, Universe> sortByValues(ConcurrentSkipListMap<Integer, Universe> map) {
-        Comparator<Integer> valueComparator = Comparator.comparing(map::get);
-        ConcurrentSkipListMap<Integer, Universe> sortedByValues = new ConcurrentSkipListMap<>(valueComparator);
+    public static ConcurrentSkipListMap<Long, Universe> sortByValues(ConcurrentSkipListMap<Long, Universe> map) {
+        Comparator<Long> valueComparator = Comparator.comparing(map::get);
+        ConcurrentSkipListMap<Long, Universe> sortedByValues = new ConcurrentSkipListMap<>(valueComparator);
         sortedByValues.putAll(map);
         return sortedByValues;
     }
 
-    public static ConcurrentSkipListMap<Integer, Universe> getSortedCollection() {
+    public static ConcurrentSkipListMap<Long, Universe> getSortedCollection() {
         return sortByValues(universeConcurrentSkipListMap);
     }
 
     /**
      * Добавить элемент в словарь
      */
-    public void put(Integer key, Universe value) {
+    public void put(Long key, Universe value) {
         if (universeConcurrentSkipListMap != null)
             universeConcurrentSkipListMap.put(key, value);
     }

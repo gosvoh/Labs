@@ -2,25 +2,56 @@ package ga.gosvoh;
 
 import ga.gosvoh.utils.*;
 
-import static ga.gosvoh.utils.Defines.*;
-
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.nio.ByteBuffer;
+import java.net.UnknownHostException;
 import java.nio.channels.DatagramChannel;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@SuppressWarnings({"InfiniteLoopStatement", "UnnecessaryContinue"})
+@SuppressWarnings({"InfiniteLoopStatement", "UnnecessaryContinue", "WeakerAccess"})
 public class StartClient {
     private static DatagramChannel channel = null;
     private static InetSocketAddress inetSocketAddress;
+    private static CopyOnWriteArrayList<ReceivedData> receivedData = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
-        new UniverseCollection(DEFAULT_JSON_FILE_PATH);
+        System.out.println("Лабораторная работа по программированию. Версия " +
+                StartClient.class.getPackage().getImplementationVersion());
+
+        new UniverseCollection(Defines.DEFAULT_JSON_FILE_PATH);
 
         Scanner cmdScanner = new Scanner(System.in);
+        int PORT;
+        String ADDRESS;
+
+        try {
+            System.out.print("Введите порт сервера: ");
+            PORT = Integer.parseInt(cmdScanner.nextLine());
+            if (PORT < 0 || PORT > 65535)
+                throw new NumberFormatException();
+        } catch (NumberFormatException e) {
+            PORT = Defines.PORT;
+            System.out.println("Неверно введён порт! Порт сервера: " + PORT);
+        }
+        try {
+            System.out.print("Введите адрес сервера: ");
+            ADDRESS = cmdScanner.nextLine();
+            InetAddress adr = InetAddress.getByName(ADDRESS);
+            if (!adr.isReachable(Defines.RECEIVING_TIMEOUT) || ADDRESS.equals(""))
+                throw new UnknownHostException();
+
+            inetSocketAddress = new InetSocketAddress(adr, PORT);
+        } catch (UnknownHostException | IllegalArgumentException e) {
+            ADDRESS = Defines.ADDRESS;
+            System.out.println("Неверно введён адерс! Адрес сервера: " + ADDRESS);
+            inetSocketAddress = new InetSocketAddress(ADDRESS, PORT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         try {
             channel = DatagramChannel.open();
@@ -29,103 +60,62 @@ public class StartClient {
             e.printStackTrace();
         }
 
-        inetSocketAddress = new InetSocketAddress(ADDRESS, PORT);
-
         while (true) {
             System.out.print("Input command: ");
-            String cmd = cmdScanner.nextLine();
+            String line = cmdScanner.nextLine();
+            String[] splittedLine = line.split("[ \t]+");
+            String command = splittedLine[0];
+            String[] lineWithoutCommand = Arrays.copyOfRange(splittedLine, 1, splittedLine.length);
+            StringBuilder sb = new StringBuilder();
+            for (String s : lineWithoutCommand)
+                sb.append(s).append(" ");
+
             try {
-                if (CommandManager.isCommand(cmd))
-                    CommandManager.ExecuteCommand(cmd);
+                if (CommandManager.isCommand(command))
+                    CommandManager.ExecuteCommand(command);
                 else
-                    PacketUtils.sendData(cmd.getBytes());
-                    //sendPacket(cmd);
+                    PacketUtils.sendData(sb.toString().getBytes(), CommandCodes.getCommandCode(command), 1);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            for (int i = 0; i < RECEIVING_ATTEMPTS; i++) {
+            for (int i = 0; i < Defines.RECEIVING_ATTEMPTS; i++) {
                 try {
-                    Thread.sleep(RECEIVING_TIMEOUT);
+                    Thread.sleep(Defines.RECEIVING_TIMEOUT);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                /*if (!receivePacket()) {
+                if (!receivePacket()) {
+                    if (PacketUtils.isLoadImport())
+                        i--;
                     continue;
                 } else
-                    break;*/
-                if (!PacketUtils.receivePacket().isFullData())
-                    continue;
-                else
                     break;
             }
         }
     }
 
-    public static void sendPacket(String data) throws PacketOverflowException {
-        int countOfPackets = (int) Math.ceil(data.getBytes().length / (PACKET_LENGTH - METADATA_LENGTH)) + (data.getBytes().length % (PACKET_LENGTH - METADATA_LENGTH) == 0 ? 0 : 1);
-        if (countOfPackets > 256)
-            throw new PacketOverflowException("Too many packets for this request!");
-        ByteBuffer byteBuffer = ByteBuffer.allocate(PACKET_LENGTH);
-        ByteBuffer d = ByteBuffer.wrap(data.getBytes());
-        for (int i = 0; i < countOfPackets; i++) {
-            byteBuffer.clear();
-            byteBuffer.put(PacketUtils.createMetadata(0, 0, countOfPackets, i));
-            if (((d.limit() - (i * (PACKET_LENGTH - METADATA_LENGTH))) >= (PACKET_LENGTH - METADATA_LENGTH)))
-                byteBuffer.put(d.array(), i * (PACKET_LENGTH - METADATA_LENGTH), PACKET_LENGTH - METADATA_LENGTH);
-            else {
-                byteBuffer.put(d.array(), i * (PACKET_LENGTH - METADATA_LENGTH), (d.limit() - (i * (PACKET_LENGTH - METADATA_LENGTH))));
-                byte[] spaces = new byte[(PACKET_LENGTH - METADATA_LENGTH) - (d.limit() - (i * (PACKET_LENGTH - METADATA_LENGTH)))];
-                Arrays.fill(spaces, " ".getBytes()[0]);
-                byteBuffer.put(spaces);
-            }
-            byteBuffer.flip();
-            try {
-                channel.send(byteBuffer, inetSocketAddress);
-            } catch (IOException e) {
-                e.printStackTrace();
+    public static boolean receivePacket() {
+        ReceivedData data = PacketUtils.receivePacket();
+        if (data.haveData()) {
+            if (data.getCommandCode() != CommandCodes.getCommandCode("load")) {
+                System.out.println(new String(data.getData()).trim());
+                return true;
+            } else {
+                if (!PacketUtils.isLoadImport())
+                    receivedData.clear();
+                PacketUtils.startLoadImport();
+                if (receivedData.size() < data.getTotalCount()) {
+                    receivedData.add(data);
+                    if (receivedData.size() == data.getTotalCount()) {
+                        CommandManager.ExecuteCommand("load");
+                        return true;
+                    }
+                    return false;
+                }
             }
         }
-    }
-
-    private static boolean receivePacket() {
-        CopyOnWriteArrayList<ByteBuffer> packetsParts = new CopyOnWriteArrayList<>();
-        int countOfPackets = -1, receivedPackets = 0, currentPacketNumber = -1;
-        ByteBuffer response;
-        ByteBuffer byteBuffer = ByteBuffer.allocate(PACKET_LENGTH);
-        long startTime = System.currentTimeMillis();
-        while (System.currentTimeMillis() - startTime < RECEIVING_TIMEOUT) {
-            byteBuffer.clear();
-            try {
-                channel.receive(byteBuffer);
-                if (byteBuffer.position() == 0)
-                    continue;
-                receivedPackets++;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if (receivedPackets > 0) {
-                countOfPackets = byteBuffer.get(0) & 0xff;
-                currentPacketNumber = byteBuffer.get(1) & 0xff;
-            }
-            if (countOfPackets > 0) {
-                while (packetsParts.size() < currentPacketNumber)
-                    packetsParts.add(null);
-                if (packetsParts.size() == currentPacketNumber)
-                    packetsParts.add(byteBuffer);
-                if (packetsParts.get(currentPacketNumber) == null)
-                    packetsParts.set(currentPacketNumber, byteBuffer);
-            }
-        }
-        if (countOfPackets == receivedPackets) {
-            response = ByteBuffer.allocate(countOfPackets * (PACKET_LENGTH - METADATA_LENGTH));
-            for (ByteBuffer b : packetsParts) {
-                b.flip();
-                response.put(b.array(), METADATA_LENGTH, PACKET_LENGTH - METADATA_LENGTH);
-            }
-            System.out.println(new String(response.array()).trim());
-            return true;
-        } else return false;
+        return false;
     }
 
     public static InetSocketAddress getInetSocketAddress() {
@@ -134,5 +124,9 @@ public class StartClient {
 
     public static DatagramChannel getChannel() {
         return channel;
+    }
+
+    public static CopyOnWriteArrayList<ReceivedData> getReceivedData() {
+        return receivedData;
     }
 }

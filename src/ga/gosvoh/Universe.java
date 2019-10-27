@@ -23,9 +23,9 @@ public class Universe implements Comparable<Universe>, Serializable {
      * @param number номер вселенной
      * @param name   имя вселенной
      */
-    public Universe(String number, String name, Position position) {
+    public Universe(long number, String name, Position position) {
         this.name = name;
-        this.number = Long.parseLong(number, 16);
+        this.number = number;
         this.birthDate = new Date();
         this.position = position;
     }
@@ -44,8 +44,8 @@ public class Universe implements Comparable<Universe>, Serializable {
      *
      * @return Номер объекта
      */
-    public String getNumber() {
-        return Long.toHexString(number);
+    public long getNumber() {
+        return number;
     }
 
     /**

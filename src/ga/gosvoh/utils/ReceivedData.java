@@ -1,43 +1,43 @@
 package ga.gosvoh.utils;
 
+@SuppressWarnings("WeakerAccess")
 public class ReceivedData {
-    private int countOfUniverses, universeKey;
+    private int totalCount;
+    private byte commandCode;
     private byte[] data;
+    private boolean isDone = false;
 
     public ReceivedData() {
     }
 
-    public ReceivedData(int countOfUniverses, int universeKey, byte[] data) {
-        this.countOfUniverses = countOfUniverses;
-        this.universeKey = universeKey;
+    public ReceivedData(byte commandCode, int totalCount, byte[] data) {
+        this.totalCount = totalCount;
+        this.commandCode = commandCode;
         this.data = data;
+        isDone = true;
     }
 
-    public boolean isFullData() {
-        return (data != null);
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public byte getCommandCode() {
+        return commandCode;
+    }
+
+    public boolean haveData() {
+        return data != null;
     }
 
     public byte[] getData() {
         return data;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
+    public boolean isDone() {
+        return isDone;
     }
 
-    public int getCountOfUniverses() {
-        return countOfUniverses;
-    }
-
-    public void setCountOfUniverses(int countOfUniverses) {
-        this.countOfUniverses = countOfUniverses;
-    }
-
-    public int getUniverseKey() {
-        return universeKey;
-    }
-
-    public void setUniverseKey(int universeKey) {
-        this.universeKey = universeKey;
+    public void setDone(boolean done) {
+        isDone = done;
     }
 }
