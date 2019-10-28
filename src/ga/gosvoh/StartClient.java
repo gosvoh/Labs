@@ -40,17 +40,13 @@ public class StartClient {
         try {
             System.out.print("Введите адрес сервера: ");
             ADDRESS = cmdScanner.nextLine();
-            InetAddress adr = InetAddress.getByName(ADDRESS);
-            if (!adr.isReachable(Defines.RECEIVING_TIMEOUT) || ADDRESS.equals(""))
+            if (ADDRESS.equals(""))
                 throw new UnknownHostException();
-
-            inetSocketAddress = new InetSocketAddress(adr, PORT);
+            inetSocketAddress = new InetSocketAddress(ADDRESS, PORT);
         } catch (UnknownHostException | IllegalArgumentException e) {
             ADDRESS = Defines.ADDRESS;
             System.out.println("Неверно введён адерс! Адрес сервера: " + ADDRESS);
             inetSocketAddress = new InetSocketAddress(ADDRESS, PORT);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
 
         try {
