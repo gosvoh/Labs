@@ -4,6 +4,7 @@ import ga.gosvoh.StartClient;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.UnresolvedAddressException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -109,6 +110,8 @@ public class PacketUtils {
                 StartClient.getChannel().send(byteBuffer, StartClient.getInetSocketAddress());
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (UnresolvedAddressException e) {
+                System.out.println("Неправильно введён адрес сервера, перезапустите программу!");
             }
         }
     }
