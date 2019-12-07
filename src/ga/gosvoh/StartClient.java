@@ -3,8 +3,6 @@ package ga.gosvoh;
 import ga.gosvoh.utils.*;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.nio.channels.DatagramChannel;
@@ -22,7 +20,14 @@ public class StartClient {
         System.out.println("Лабораторная работа по программированию. Версия " +
                 StartClient.class.getPackage().getImplementationVersion());
 
-        new UniverseCollection(Defines.DEFAULT_JSON_FILE_PATH);
+        String path;
+        if (System.getenv("MAINJSONFILE") == null) {
+            System.out.println("Переменная окружающей среды \"MAINJSONFILE\" не обнаружена, ипользую путь по умолчанию: " + Defines.DEFAULT_JSON_FILE_PATH);
+            path = Defines.DEFAULT_JSON_FILE_PATH;
+        }
+        else path = System.getenv("MAINJSONFILE");
+
+        new UniverseCollection(path);
 
         Scanner cmdScanner = new Scanner(System.in);
         int PORT;
