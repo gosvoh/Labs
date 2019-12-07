@@ -1,2 +1,2 @@
-# Labs
-Repo for programming labs
+# Server
+Ветка сервера для лабораторных работ
