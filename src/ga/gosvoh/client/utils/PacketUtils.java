@@ -1,13 +1,12 @@
-package ga.gosvoh.utils;
+package ga.gosvoh.client.utils;
 
-import ga.gosvoh.StartClient;
+import ga.gosvoh.client.StartClient;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @SuppressWarnings("WeakerAccess")
 public class PacketUtils {

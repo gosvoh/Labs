@@ -1,4 +1,4 @@
-package ga.gosvoh;
+package ga.gosvoh.client;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -79,7 +79,7 @@ public class Universe implements Comparable<Universe>, Serializable {
 
     @Override
     public String toString() {
-        return "ga.gosvoh.Universe{" +
+        return "ga.gosvoh.client.Universe{" +
                 "name='" + name + '\'' +
                 ", number=" + getNumber() +
                 ", birthDate=" + birthDate +

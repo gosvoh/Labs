@@ -1,6 +1,6 @@
-package ga.gosvoh;
+package ga.gosvoh.client;
 
-import ga.gosvoh.utils.*;
+import ga.gosvoh.client.utils.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

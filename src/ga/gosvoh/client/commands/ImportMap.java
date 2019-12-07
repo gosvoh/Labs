@@ -1,17 +1,13 @@
-package ga.gosvoh.commands;
+package ga.gosvoh.client.commands;
 
-import ga.gosvoh.StartClient;
-import ga.gosvoh.Universe;
-import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.utils.*;
+import ga.gosvoh.client.Universe;
+import ga.gosvoh.client.UniverseCollection;
+import ga.gosvoh.client.utils.*;
 
 import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.DatagramChannel;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentSkipListMap;
 
-import static ga.gosvoh.utils.Defines.*;
+import static ga.gosvoh.client.utils.Defines.*;
 
 public class ImportMap implements Command {
     public ImportMap() {

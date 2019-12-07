@@ -1,5 +1,6 @@
-package ga.gosvoh.utils;
+package ga.gosvoh.client.utils;
 
+@SuppressWarnings("WeakerAccess")
 public class PacketOverflowException extends RuntimeException {
     public PacketOverflowException(String msg) {
         super(msg);

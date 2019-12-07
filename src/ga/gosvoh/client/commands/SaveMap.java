@@ -1,8 +1,8 @@
-package ga.gosvoh.commands;
+package ga.gosvoh.client.commands;
 
-import ga.gosvoh.JsonWriter;
-import ga.gosvoh.Universe;
-import ga.gosvoh.UniverseCollection;
+import ga.gosvoh.client.JsonWriter;
+import ga.gosvoh.client.Universe;
+import ga.gosvoh.client.UniverseCollection;
 
 import java.io.IOException;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentSkipListMap;
  */
 @SuppressWarnings({"WeakerAccess", "TryWithIdenticalCatches"})
 public class SaveMap implements Command {
-    private ConcurrentSkipListMap<Long, Universe> map;
 
     /**
      * Конструктор класса
@@ -24,7 +23,7 @@ public class SaveMap implements Command {
 
     @Override
     public void execute() {
-        map = UniverseCollection.getUniverseConcurrentSkipListMap();
+        ConcurrentSkipListMap<Long, Universe> map = UniverseCollection.getUniverseConcurrentSkipListMap();
 
         try {
             JsonWriter jsonWriter = new JsonWriter(UniverseCollection.getMainFile().toPath());

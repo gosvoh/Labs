@@ -1,4 +1,4 @@
-package ga.gosvoh;
+package ga.gosvoh.client;
 
 /**
  * Планета, находящаяся во вселенной
@@ -7,8 +7,6 @@ package ga.gosvoh;
  */
 class Planet extends Universe {
 
-    private String name;
-
     /**
      * Конструктор класса
      *
@@ -16,6 +14,5 @@ class Planet extends Universe {
      */
     Planet(String name) {
         super(Math.round(Math.random() * Integer.MAX_VALUE), name, Position.zero());
-        this.name = name;
     }
 }

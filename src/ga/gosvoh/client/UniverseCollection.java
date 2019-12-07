@@ -1,4 +1,4 @@
-package ga.gosvoh;
+package ga.gosvoh.client;
 
 import java.io.File;
 import java.io.FileNotFoundException;

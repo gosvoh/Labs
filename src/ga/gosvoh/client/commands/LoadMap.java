@@ -1,15 +1,13 @@
-package ga.gosvoh.commands;
+package ga.gosvoh.client.commands;
 
-import ga.gosvoh.CommandManager;
-import ga.gosvoh.StartClient;
-import ga.gosvoh.Universe;
-import ga.gosvoh.UniverseCollection;
-import ga.gosvoh.utils.*;
+import ga.gosvoh.client.StartClient;
+import ga.gosvoh.client.Universe;
+import ga.gosvoh.client.UniverseCollection;
+import ga.gosvoh.client.utils.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.channels.DatagramChannel;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 

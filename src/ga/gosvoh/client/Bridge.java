@@ -1,4 +1,4 @@
-package ga.gosvoh;
+package ga.gosvoh.client;
 
 /**
  * Мост, находящийся на планете
@@ -7,8 +7,6 @@ package ga.gosvoh;
  */
 public class Bridge extends Planet {
 
-    private String name;
-
     /**
      * Конструктор класса
      *
@@ -16,6 +14,5 @@ public class Bridge extends Planet {
      */
     public Bridge(String name) {
         super(name);
-        this.name = name;
     }
 }

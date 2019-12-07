@@ -1,4 +1,4 @@
-package ga.gosvoh.commands;
+package ga.gosvoh.client.commands;
 
 /**
  * Функциональный интерфейс, предназначенный для исполнения команды

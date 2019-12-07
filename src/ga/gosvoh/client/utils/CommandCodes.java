@@ -1,4 +1,4 @@
-package ga.gosvoh.utils;
+package ga.gosvoh.client.utils;
 
 import java.util.concurrent.ConcurrentHashMap;
 
