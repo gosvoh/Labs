@@ -1,2 +1,2 @@
-# Labs
-Repo for programming labs
+# Client
+Ветка клиента для лабораторных работ
